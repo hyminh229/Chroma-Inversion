@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-// Script DUY NHẤT cho 1 wave dạng lưới kiểu "Chicken Invasion" — thay toàn bộ
-// WaveManager/WaveDefinition/WaveFormation cũ. Chỉ có field Grid thật sự cần,
-// không còn Shower/Growing/Zigzag/entryEffect dồn chung gây rối Inspector.
-public class GridWaveSpawner : MonoBehaviour
+// Script DUY NHẤT cho 1 wave dạng lưới kiểu "Chicken Invasion". Giờ implement
+// IWaveSpawner để WaveSequencer điều khiển thời điểm bắt đầu, không tự chạy
+// trong Start() nữa (vì giờ nó là Wave 1 trong chuỗi, không đứng riêng lẻ).
+public class GridWaveSpawner : MonoBehaviour, IWaveSpawner
 {
     [Header("Formation")]
     [SerializeField] private GameObject enemyPrefab;
@@ -28,7 +28,7 @@ public class GridWaveSpawner : MonoBehaviour
 
     private int aliveCount;
 
-    private void Start()
+    public void StartWave()
     {
         StartCoroutine(SpawnGrid());
     }
@@ -57,18 +57,14 @@ public class GridWaveSpawner : MonoBehaviour
         }
     }
 
-    // Toạ độ suy ra từ Camera.main NGAY LÚC SPAWN — không còn số tuyệt đối
-    // nào phải tự canh tay theo từng scene/camera khác nhau nữa.
     private void ComputeLayout(out float startX, out float colSpacing, out float topRowY)
     {
-        Camera cam = Camera.main;
-        Vector3 bottomLeft = cam.ViewportToWorldPoint(new Vector3(0f, 0f, cam.nearClipPlane));
-        Vector3 topRight = cam.ViewportToWorldPoint(new Vector3(1f, 1f, cam.nearClipPlane));
+        ScreenBoundsUtil.GetWorldBounds(out float minX, out float maxX, out _, out float topY);
 
-        float usableWidth = (topRight.x - bottomLeft.x) - 2f * horizontalMargin;
+        float usableWidth = (maxX - minX) - 2f * horizontalMargin;
         colSpacing = columns > 1 ? usableWidth / (columns - 1) : 0f;
-        startX = bottomLeft.x + horizontalMargin;
-        topRowY = topRight.y - topMargin;
+        startX = minX + horizontalMargin;
+        topRowY = topY - topMargin;
     }
 
     private void SpawnOne(Vector3 position, ElementColor color)
@@ -86,8 +82,6 @@ public class GridWaveSpawner : MonoBehaviour
             polarity.SetColor(color);
         }
 
-        // FIX bug "rơi xuống giữa màn hình": ép cứng Stationary tại đây, không
-        // phụ thuộc giá trị mặc định (LinearDown) khai báo sẵn trên EnemyController.
         if (instance.TryGetComponent(out EnemyController controller))
         {
             controller.ConfigureMovement(MovementPattern.Stationary, 0f, float.NegativeInfinity, float.PositiveInfinity);
@@ -114,7 +108,7 @@ public class GridWaveSpawner : MonoBehaviour
 
         if (aliveCount <= 0)
         {
-            Debug.Log("Wave cleared!");
+            Debug.Log("Wave 1 cleared!");
             OnWaveCleared?.Invoke();
         }
     }

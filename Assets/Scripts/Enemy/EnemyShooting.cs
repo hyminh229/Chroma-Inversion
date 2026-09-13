@@ -35,10 +35,12 @@ public class EnemyShooting : MonoBehaviour
         }
     }
 
-    // Cho phép WaveManager gán màu đạn độc lập với màu thân theo từng wave (Phase 3.5).
-    public void SetBulletColor(ElementColor color)
+    // WaveSpawner gọi để mỗi con trong wave có nhịp bắn hơi khác nhau,
+    // tránh cả đám bắn y hệt cùng 1 fire rate.
+    public void ConfigureFiring(float newFireCheckInterval, float newFireChance)
     {
-        bulletColor = color;
+        fireCheckInterval = newFireCheckInterval;
+        fireChance = newFireChance;
     }
 
     private void Shoot()

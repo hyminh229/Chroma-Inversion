@@ -68,35 +68,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5897707616289683315, guid: 12470980cb568144c96bdc2bbe7ed770, type: 3}
+      propertyPath: aimAtPlayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 727100261008302460, guid: 12470980cb568144c96bdc2bbe7ed770, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -4515166238115577865}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12470980cb568144c96bdc2bbe7ed770, type: 3}
---- !u!1 &8078699811275572655 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 727100261008302460, guid: 12470980cb568144c96bdc2bbe7ed770, type: 3}
-  m_PrefabInstance: {fileID: 8793950594665997523}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &-4515166238115577865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8078699811275572655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 169a5828b7d43cb4083beea6c0e69cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyShooting
-  bulletPrefab: {fileID: 3739410482566353081, guid: f752c85b97bb57747a3aa65aa8f12927, type: 3}
-  firePoint: {fileID: 0}
-  fireCheckInterval: 1.5
-  fireChance: 0.5
-  aimRotationOffset: -90
-  bulletColor: 0
-  aimAtPlayer: 1
