@@ -22,6 +22,14 @@ public class MegaBeam : MonoBehaviour, IDestroyable
         if (collision.TryGetComponent(out EnemyHealth enemyHealth))
         {
             enemyHealth.TakeDamage(damage);
+            return;
+        }
+
+        // Cùng lý do như PlayerContactDamage — Boss hết Collider2D ở root rồi.
+        BossHealth bossHealth = collision.GetComponentInParent<BossHealth>();
+        if (bossHealth != null)
+        {
+            bossHealth.TakeDamage(damage);
         }
     }
 

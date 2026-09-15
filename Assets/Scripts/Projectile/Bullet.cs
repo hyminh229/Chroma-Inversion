@@ -10,19 +10,26 @@ public class Bullet : ProjectileBase
         if (!isPlayerBullet) return;
         if (!collision.TryGetComponent(out EnemyHealth enemyHealth)) return;
 
-        int finalDamage = damage;
-
         if (collision.TryGetComponent(out EnemyPolarity enemyPolarity))
         {
             bool sameColor = ColorType == enemyPolarity.CurrentColor;
-            finalDamage = sameColor ? damage * 2 : damage;
 
-            Debug.Log(sameColor
-                ? "Same color hit! Damage x2 = " + finalDamage
-                : "Different color hit! Damage = " + finalDamage);
+            if (sameColor)
+            {
+                enemyHealth.TakeDamage(damage);
+                Debug.Log("Correct color! Damage = " + damage);
+            }
+            else
+            {
+                Debug.Log("Wrong color — no damage.");
+            }
+        }
+        else
+        {
+            // Phòng hờ enemy thiếu EnemyPolarity — không để vô tình thành bất tử.
+            enemyHealth.TakeDamage(damage);
         }
 
-        enemyHealth.TakeDamage(finalDamage);
         DestroyObject();
     }
 }
