@@ -2,14 +2,15 @@ using UnityEngine;
 
 // Gắn trên từng box con (TopHalf/BottomHalf). Mỗi box giữ 1 màu CỐ ĐỊNH, không
 // đổi theo runtime — việc "đổi phe" đến từ BossController xoay 180° cả cụm,
-// khiến box này đổi VỊ TRÍ trên màn hình (trên <-> dưới). Tự xử lý va chạm của
-// chính mình, đúng pattern Bullet/EnemyBullet/MeteorController đã dùng.
+// khiến box này đổi VỊ TRÍ trên màn hình (trên <-> dưới). Vì màu không bao giờ
+// đổi lúc chạy, chỉ cần 1 sprite duy nhất khớp assignedColor — không cần cặp
+// blueSprite/redSprite như ChromaPolarityBase/ProjectileBase (những cái đó
+// switch màu lúc runtime nên phải cache sẵn cả 2).
 public class BossHalfHitbox : MonoBehaviour
 {
     [SerializeField] private ElementColor assignedColor = ElementColor.BLUE;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Color blueColor = Color.blue;
-    [SerializeField] private Color redColor = Color.red;
+    [SerializeField] private Sprite halfSprite;
 
     private BossHealth bossHealth;
 
@@ -22,9 +23,10 @@ public class BossHalfHitbox : MonoBehaviour
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        if (spriteRenderer != null)
+        if (spriteRenderer != null && halfSprite != null)
         {
-            spriteRenderer.color = assignedColor == ElementColor.BLUE ? blueColor : redColor;
+            spriteRenderer.sprite = halfSprite;
+            spriteRenderer.color = Color.white;
         }
     }
 

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 120911750294436165}
   - component: {fileID: 5269026402450152274}
   - component: {fileID: 6626611841233755190}
-  - component: {fileID: 1059101951909481874}
   - component: {fileID: 4665738379032985431}
   - component: {fileID: 8250431414829393960}
   m_Layer: 0
@@ -52,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 644e9ac9ee18e1c4f9638f391da5ae9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossHealth
-  maxHealth: 200
+  maxHealth: 100
 --- !u!114 &5269026402450152274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,8 +64,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a3bf6c70689294b8057414a6210a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
-  holdDuration: 2.5
-  flipDuration: 0.5
+  spinSpeed: 120
+  spinDuration: 2
+  moveDuration: 1.2
   firePoints:
   - {fileID: 5014559886092277190}
   - {fileID: 3742049010085619264}
@@ -74,7 +74,7 @@ MonoBehaviour:
   fireInterval: 0.8
   fireChance: 0.8
   enrageHpThreshold: 0.35
-  enrageHoldMultiplier: 0.5
+  enrageSpinMultiplier: 1.6
   enrageFireIntervalMultiplier: 0.5
 --- !u!114 &6626611841233755190
 MonoBehaviour:
@@ -89,42 +89,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossHealth
   maxHealth: 100
---- !u!58 &1059101951909481874
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762208791746185440}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.019154072, y: 0}
-  m_Radius: 1.9940169
 --- !u!50 &4665738379032985431
 Rigidbody2D:
   serializedVersion: 5
@@ -199,7 +163,7 @@ Transform:
   m_GameObject: {fileID: 5470439179262802352}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -219,8 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossHalfHitbox
   assignedColor: 0
   spriteRenderer: {fileID: 1882037219528756170}
-  blueColor: {r: 0, g: 0, b: 1, a: 1}
-  redColor: {r: 1, g: 0, b: 0, a: 1}
+  halfSprite: {fileID: 0}
 --- !u!68 &1193382346479260441
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -251,24 +214,27 @@ EdgeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -1.9839545, y: -0.40842795}
-  - {x: -1.8297057, y: 0.10255861}
-  - {x: -1.7766064, y: 0.35223055}
-  - {x: -1.6410911, y: 0.6248708}
-  - {x: -1.1456822, y: 1.0864191}
-  - {x: -0.5932642, y: 1.4055214}
-  - {x: 0.035003543, y: 1.4158831}
-  - {x: 0.6230814, y: 1.3797474}
-  - {x: 1.2815669, y: 1.0552385}
-  - {x: 1.8606465, y: 0.21285725}
-  - {x: 1.9431119, y: -0.42204213}
+  - {x: -2.0102525, y: -2.0097973}
+  - {x: -1.9873955, y: -1.7111382}
+  - {x: -1.9092284, y: -1.2603471}
+  - {x: -1.5955908, y: -0.7178662}
+  - {x: -1.3230976, y: -0.47405148}
+  - {x: -1.1532476, y: -0.32207727}
+  - {x: -0.9411232, y: -0.20516777}
+  - {x: -0.16473919, y: -0.023689508}
+  - {x: 0.132916, y: -0.021849632}
+  - {x: 0.7551484, y: -0.11982751}
+  - {x: 1.359891, y: -0.49264455}
+  - {x: 1.7535936, y: -1.00701}
+  - {x: 1.9486928, y: -1.5062306}
+  - {x: 1.9754006, y: -1.9517107}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -320,8 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossHalfHitbox
   assignedColor: 1
   spriteRenderer: {fileID: 1882037219528756170}
-  blueColor: {r: 0, g: 0, b: 1, a: 1}
-  redColor: {r: 1, g: 0, b: 0, a: 1}
+  halfSprite: {fileID: 0}
 --- !u!68 &8656731791324936592
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -352,7 +317,7 @@ EdgeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
