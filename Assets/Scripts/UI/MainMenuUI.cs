@@ -23,7 +23,7 @@ public class MainMenuUI : MonoBehaviour
         // Tự động tìm ContinueButton nếu chưa được kéo vào Inspector
         if (continueButton == null)
         {
-            Transform continueTransform = transform.Find("ContinueButton");
+            Transform continueTransform = transform.Find("ButtonsContainer/ContinueButton") ?? transform.Find("ContinueButton");
             if (continueTransform != null)
             {
                 continueButton = continueTransform.GetComponent<Button>();
@@ -93,7 +93,7 @@ public class MainMenuUI : MonoBehaviour
         Debug.Log("[MainMenuUI] New Game clicked. Resetting progression and starting fresh.");
         SaveSystem.DeleteSave();
         SaveSystem.IsContinuing = false;
-        SceneManager.LoadScene(1);
+        Loader.Load("SampleScene");
     }
 
     private void OnContinueClicked()
@@ -107,7 +107,7 @@ public class MainMenuUI : MonoBehaviour
 
         Debug.Log("[MainMenuUI] Continue clicked. Loading latest checkpoint.");
         SaveSystem.IsContinuing = true;
-        SceneManager.LoadScene(1);
+        Loader.Load("SampleScene");
     }
 
     private void QuitGame()
