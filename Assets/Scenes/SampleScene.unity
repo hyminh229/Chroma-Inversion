@@ -1754,6 +1754,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveSequencer
   waveSpawners:
+  - {fileID: 1922860954}
+  - {fileID: 11754572}
+  - {fileID: 1088799724}
+  - {fileID: 1077136039}
+  - {fileID: 1316158776}
   - {fileID: 100033011}
   bannerUI: {fileID: 2041825244}
   bannerDuration: 1.5
