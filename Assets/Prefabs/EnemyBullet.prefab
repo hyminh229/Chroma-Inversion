@@ -124,8 +124,8 @@ MonoBehaviour:
   speed: 6
   damage: 1
   spriteRenderer: {fileID: 1261367946898660277}
-  blueColor: {r: 0, g: 0, b: 1, a: 1}
-  redColor: {r: 1, g: 0, b: 0, a: 1}
+  blueSprite: {fileID: -8624817734003605091, guid: 32622e4d5bfea4c42ab9586e0d07cb47, type: 3}
+  redSprite: {fileID: -6595887025787281870, guid: 44dc4a10bc13bca4bb365755d78b8eb6, type: 3}
   absorbEnergy: 10
   perfectAbsorbEnergy: 15
   perfectParryWindow: 0.3

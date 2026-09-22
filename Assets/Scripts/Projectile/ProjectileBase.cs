@@ -6,8 +6,8 @@ public abstract class ProjectileBase : MonoBehaviour, IDestroyable
     [SerializeField] protected float speed = 10f;
     [SerializeField] protected int damage = 1;
     [SerializeField] protected SpriteRenderer spriteRenderer;
-    [SerializeField] protected Color blueColor = Color.blue;
-    [SerializeField] protected Color redColor = Color.red;
+    [SerializeField] protected Sprite blueSprite;
+    [SerializeField] protected Sprite redSprite;
 
     public ElementColor ColorType { get; private set; }
     public int Damage => damage;
@@ -33,7 +33,7 @@ public abstract class ProjectileBase : MonoBehaviour, IDestroyable
     public void SetColor(ElementColor newColor)
     {
         ColorType = newColor;
-        UpdateVisual();
+        ApplySprite(ColorType == ElementColor.BLUE ? blueSprite : redSprite);
     }
 
     public void SetDamage(int newDamage)
@@ -41,11 +41,24 @@ public abstract class ProjectileBase : MonoBehaviour, IDestroyable
         damage = newDamage;
     }
 
-    protected virtual void UpdateVisual()
+    private void ApplySprite(Sprite target)
     {
         if (spriteRenderer == null) return;
 
-        spriteRenderer.color = ColorType == ElementColor.BLUE ? blueColor : redColor;
+        if (target == null)
+        {
+            Debug.LogWarning(gameObject.name + ": chưa gán " + (ColorType == ElementColor.BLUE ? "Blue" : "Red") + " Sprite trên ProjectileBase.");
+            return;
+        }
+
+        if (spriteRenderer.sprite != null)
+        {
+            Vector3 oldCenter = spriteRenderer.sprite.bounds.center;
+            Vector3 newCenter = target.bounds.center;
+            spriteRenderer.transform.localPosition += (oldCenter - newCenter);
+        }
+
+        spriteRenderer.sprite = target;
     }
 
     public virtual void DestroyObject()

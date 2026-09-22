@@ -7,12 +7,19 @@ public class PlayerShield : MonoBehaviour
     private int currentCharges;
 
     public int CurrentCharges => currentCharges;
+    public int MaxCharges => maxCharges;
     public bool IsActive => currentCharges > 0;
 
     public void Activate(int charges)
     {
-        currentCharges = charges;
+        currentCharges = Mathf.Clamp(charges, 0, maxCharges);
         Debug.Log("Shield activated! Charges: " + currentCharges);
+    }
+
+    public void RestoreShield(int charges)
+    {
+        currentCharges = Mathf.Clamp(charges, 0, maxCharges);
+        Debug.Log("Shield restored! Charges: " + currentCharges + "/" + maxCharges);
     }
 
     // Trả về true nếu khiên đã chặn được cú va chạm này (EnemyBullet gọi khi đạn sai màu).

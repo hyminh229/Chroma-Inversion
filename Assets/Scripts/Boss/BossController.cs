@@ -4,11 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(BossHealth))]
 public class BossController : MonoBehaviour
 {
-    [Header("Flip (đổi phe màu Top/Bottom bằng cách xoay 180°)")]
-    [SerializeField] private float holdDuration = 2.5f;
-    [SerializeField] private float flipDuration = 0.5f;
+    [Header("Spin (xoay tại chỗ quanh tâm — giống bánh xe, KHÔNG di chuyển trong lúc này)")]
+    [SerializeField] private float spinSpeed = 120f; // độ/giây — dấu (+/-) cố định 1 chiều, không đổi ngẫu nhiên nữa
+    [SerializeField] private float spinDuration = 2f;
 
-    [Header("Spread Fire (đạn màu random, độc lập hoàn toàn với việc đang xoay tới đâu)")]
+    [Header("Move (di chuyển sang vị trí X mới — KHÔNG xoay trong lúc này)")]
+    [SerializeField] private float moveDuration = 1.2f;
+
+    [Header("Spread Fire (bắn xuyên suốt cả 2 pha)")]
     [SerializeField] private Transform[] firePoints;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float fireInterval = 0.8f;
@@ -16,14 +19,14 @@ public class BossController : MonoBehaviour
 
     [Header("Enrage (tự tăng tốc khi HP xuống thấp)")]
     [SerializeField][Range(0f, 1f)] private float enrageHpThreshold = 0.35f;
-    [SerializeField] private float enrageHoldMultiplier = 0.5f;
+    [SerializeField] private float enrageSpinMultiplier = 1.6f;
     [SerializeField] private float enrageFireIntervalMultiplier = 0.5f;
 
     public bool IsEnraged { get; private set; }
 
     private BossHealth bossHealth;
     private float fireTimer;
-    private float currentZ;
+    private float minX, maxX;
 
     private void Awake()
     {
@@ -42,7 +45,8 @@ public class BossController : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(FlipLoop());
+        ScreenBoundsUtil.GetWorldBounds(out minX, out maxX, out _, out _);
+        StartCoroutine(BehaviorLoop());
     }
 
     private void Update()
@@ -50,38 +54,56 @@ public class BossController : MonoBehaviour
         HandleFiring();
     }
 
-    private IEnumerator FlipLoop()
+    // Spin tại chỗ xong HẲN mới chuyển qua Move — 2 pha tách biệt hoàn toàn,
+    // không còn chạy song song trong Update() như bản trước.
+    private IEnumerator BehaviorLoop()
     {
         while (bossHealth.IsAlive)
         {
-            float hold = IsEnraged ? holdDuration * enrageHoldMultiplier : holdDuration;
-            yield return new WaitForSeconds(hold);
-
+            yield return StartCoroutine(SpinPhase());
             if (!bossHealth.IsAlive) yield break;
 
-            yield return StartCoroutine(FlipRotation());
+            yield return StartCoroutine(MovePhase());
         }
     }
 
-    // Xoay đúng 180° mỗi lần, không oscillate liên tục nữa. TopHalf/BottomHalf
-    // (2 box con) giữ màu CỐ ĐỊNH trên chính nó — chỉ có VỊ TRÍ trên màn hình
-    // đổi chỗ cho nhau sau mỗi lần flip. Đó là toàn bộ cơ chế "đổi phe".
-    private IEnumerator FlipRotation()
+    private IEnumerator SpinPhase()
     {
-        float startZ = currentZ;
-        float targetZ = currentZ + 180f;
         float t = 0f;
 
-        while (t < flipDuration)
+        while (t < spinDuration)
         {
             t += Time.deltaTime;
-            float z = Mathf.Lerp(startZ, targetZ, t / flipDuration);
-            transform.rotation = Quaternion.Euler(0f, 0f, z);
+            float speed = IsEnraged ? spinSpeed * enrageSpinMultiplier : spinSpeed;
+            transform.Rotate(0f, 0f, speed * Time.deltaTime);
             yield return null;
         }
 
-        currentZ = targetZ;
-        transform.rotation = Quaternion.Euler(0f, 0f, currentZ);
+        // Snap về đúng bội số 180° gần nhất — đảm bảo LUÔN dừng ở trạng thái lộ
+        // rõ 1 màu trên/1 màu dưới, bất kể spinSpeed/spinDuration/enrage được
+        // tune thế nào sau này, không cần tự nhẩm cho chia hết 180.
+        float snappedZ = Mathf.Round(transform.eulerAngles.z / 180f) * 180f;
+        transform.rotation = Quaternion.Euler(0f, 0f, snappedZ);
+    }
+
+    private IEnumerator MovePhase()
+    {
+        float targetX = Random.Range(minX, maxX);
+        float startX = transform.position.x;
+        float t = 0f;
+
+        while (t < moveDuration)
+        {
+            t += Time.deltaTime;
+            Vector3 pos = transform.position;
+            pos.x = Mathf.Lerp(startX, targetX, t / moveDuration);
+            transform.position = pos;
+            yield return null;
+        }
+
+        Vector3 finalPos = transform.position;
+        finalPos.x = targetX;
+        transform.position = finalPos;
     }
 
     private void HandleFiring()
@@ -120,8 +142,6 @@ public class BossController : MonoBehaviour
         if (bulletObject == null) return;
         if (!bulletObject.TryGetComponent(out EnemyBullet enemyBullet)) return;
 
-        // Màu đạn RANDOM hoàn toàn mỗi phát — không còn liên quan tới việc thân
-        // đang xoay tới đâu (khác hẳn bản trước).
         ElementColor randomColor = Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
         enemyBullet.SetColor(randomColor);
     }

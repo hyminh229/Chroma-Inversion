@@ -6,8 +6,8 @@ public abstract class ChromaPolarityBase : MonoBehaviour
     [Header("Chroma Polarity")]
     [SerializeField] protected ElementColor startingColor = ElementColor.BLUE;
     [SerializeField] protected SpriteRenderer spriteRenderer;
-    [SerializeField] protected Color blueColor = Color.blue;
-    [SerializeField] protected Color redColor = Color.red;
+    [SerializeField] protected Sprite blueSprite;
+    [SerializeField] protected Sprite redSprite;
 
     public ElementColor CurrentColor { get; protected set; }
     public float LastSwitchTime { get; protected set; } = -Mathf.Infinity;
@@ -20,14 +20,14 @@ public abstract class ChromaPolarityBase : MonoBehaviour
         }
 
         CurrentColor = startingColor;
-        UpdateVisual();
+        ApplySprite(CurrentColor == ElementColor.BLUE ? blueSprite : redSprite, skipCompensation: true);
     }
 
     public virtual void SetColor(ElementColor newColor)
     {
         CurrentColor = newColor;
         LastSwitchTime = Time.time;
-        UpdateVisual();
+        ApplySprite(CurrentColor == ElementColor.BLUE ? blueSprite : redSprite, skipCompensation: false);
     }
 
     public void SwitchColor()
@@ -35,10 +35,25 @@ public abstract class ChromaPolarityBase : MonoBehaviour
         SetColor(CurrentColor == ElementColor.BLUE ? ElementColor.RED : ElementColor.BLUE);
     }
 
-    protected virtual void UpdateVisual()
+    // skipCompensation = true khi gán sprite lần đầu (Awake) — lúc đó chưa có
+    // sprite cũ để so lệch pivot, bù trừ sẽ vô nghĩa (hoặc sai) nên bỏ qua.
+    private void ApplySprite(Sprite target, bool skipCompensation)
     {
         if (spriteRenderer == null) return;
 
-        spriteRenderer.color = CurrentColor == ElementColor.BLUE ? blueColor : redColor;
+        if (target == null)
+        {
+            Debug.LogWarning(gameObject.name + ": chưa gán " + (CurrentColor == ElementColor.BLUE ? "Blue" : "Red") + " Sprite trên ChromaPolarityBase.");
+            return;
+        }
+
+        if (!skipCompensation && spriteRenderer.sprite != null)
+        {
+            Vector3 oldCenter = spriteRenderer.sprite.bounds.center;
+            Vector3 newCenter = target.bounds.center;
+            spriteRenderer.transform.localPosition += (oldCenter - newCenter);
+        }
+
+        spriteRenderer.sprite = target;
     }
 }

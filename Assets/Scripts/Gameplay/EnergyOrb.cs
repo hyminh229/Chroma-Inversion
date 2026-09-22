@@ -6,8 +6,8 @@ public class EnergyOrb : MonoBehaviour
     [SerializeField] private ElementColor color = ElementColor.BLUE;
     [SerializeField] private int energyAmount = 4;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Color blueColor = Color.blue;
-    [SerializeField] private Color redColor = Color.red;
+    [SerializeField] private Sprite blueSprite;
+    [SerializeField] private Sprite redSprite;
 
     private void Awake()
     {
@@ -29,7 +29,8 @@ public class EnergyOrb : MonoBehaviour
     {
         if (spriteRenderer == null) return;
 
-        spriteRenderer.color = color == ElementColor.BLUE ? blueColor : redColor;
+        spriteRenderer.sprite = color == ElementColor.BLUE ? blueSprite : redSprite;
+        spriteRenderer.color = Color.white;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
