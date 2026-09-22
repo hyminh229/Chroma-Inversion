@@ -24,6 +24,14 @@ public class PauseMenu : MonoBehaviour
 
     private void Awake()
     {
+        // Auto-fetch SettingsUI if not assigned in Inspector
+        if (settingsUI == null && settingsPanel != null)
+        {
+            settingsUI = settingsPanel.GetComponent<SettingsUI>();
+            if (settingsUI == null)
+                settingsUI = settingsPanel.GetComponentInChildren<SettingsUI>(true);
+        }
+
         // Wire up button listeners
         if (resumeButton != null)
             resumeButton.onClick.AddListener(ResumeGame);
@@ -118,6 +126,13 @@ public class PauseMenu : MonoBehaviour
             return;
         }
 
+        if (settingsUI == null)
+        {
+            settingsUI = settingsPanel.GetComponent<SettingsUI>();
+            if (settingsUI == null)
+                settingsUI = settingsPanel.GetComponentInChildren<SettingsUI>(true);
+        }
+
         isSettingsOpen = true;
 
         // Hide the Pause Panel while Settings is open
@@ -156,11 +171,7 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     private void OnSettingsClosed()
     {
-        isSettingsOpen = false;
-
-        // Re-show the Pause Panel
-        if (pausePanel != null)
-            pausePanel.SetActive(true);
+        CloseSettings();
     }
 
     /// <summary>
