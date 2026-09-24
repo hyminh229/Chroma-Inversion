@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 024127449e148dc43b528180200f6116
+guid: 288b9b9ef32747a43943f05c4706d5bb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3621739095085861641
-    second: asteroid-2_0
+      213: 67303949248644381
+    second: exhaust_05_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: asteroid-2_0
+      name: exhaust_05_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 0
-        width: 20
-        height: 17
+        x: 19
+        y: 17
+        width: 24
+        height: 31
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 90bccb7a480034230800000000000000
-      internalID: 3621739095085861641
+      spriteID: d1542f2d59c1fe000800000000000000
+      internalID: 67303949248644381
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      asteroid-2_0: 3621739095085861641
+      exhaust_05_0: 67303949248644381
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
