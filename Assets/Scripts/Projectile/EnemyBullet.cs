@@ -5,31 +5,33 @@ public class EnemyBullet : ProjectileBase
     [SerializeField] private int absorbEnergy = 10;
     [SerializeField] private int perfectAbsorbEnergy = 15;
     [SerializeField] private float perfectParryWindow = 0.3f;
+    [SerializeField] private int absorbScore = 10;
+    [SerializeField] private int perfectAbsorbScore = 25;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.TryGetComponent(out PlayerHealth playerHealth)) return;
+        if (!collision.TryGetComponent(out PlayerLife playerLife)) return;
         if (!collision.TryGetComponent(out PlayerColorController playerColor)) return;
 
         if (ColorType == playerColor.CurrentColor)
         {
-            Absorb(playerHealth, playerColor);
+            Absorb(playerLife, playerColor);
         }
         else if (collision.TryGetComponent(out PlayerShield shield) && shield.TryBlockHit())
         {
-            // Khiên đã chặn cú va chạm sai màu này, không trừ máu.
+            // Khiên đã chặn cú va chạm sai màu này, không mất mạng.
         }
         else
         {
-            DamagePlayer(playerHealth);
+            DamagePlayer(playerLife);
         }
 
         DestroyObject();
     }
 
-    private void Absorb(PlayerHealth playerHealth, PlayerColorController playerColor)
+    private void Absorb(PlayerLife playerLife, PlayerColorController playerColor)
     {
-        if (!playerHealth.TryGetComponent(out PlayerEnergy playerEnergy))
+        if (!playerLife.TryGetComponent(out PlayerEnergy playerEnergy))
         {
             Debug.LogWarning("Player does not have PlayerEnergy component.");
             return;
@@ -37,18 +39,19 @@ public class EnemyBullet : ProjectileBase
 
         bool isPerfect = (Time.time - playerColor.LastSwitchTime) <= perfectParryWindow;
         int energyGained = isPerfect ? perfectAbsorbEnergy : absorbEnergy;
+        int scoreGained = isPerfect ? perfectAbsorbScore : absorbScore;
 
         playerEnergy.AddEnergy(ColorType, energyGained);
+        ScoreManager.Instance?.AddScore(scoreGained);
 
         Debug.Log(isPerfect
-            ? "Perfect Absorb! +" + energyGained + " " + ColorType + " Energy."
-            : "Enemy bullet absorbed! +" + energyGained + " " + ColorType + " Energy.");
+            ? "Perfect Absorb! +" + energyGained + " " + ColorType + " Energy, +" + scoreGained + " Score."
+            : "Enemy bullet absorbed! +" + energyGained + " " + ColorType + " Energy, +" + scoreGained + " Score.");
     }
 
-    private void DamagePlayer(PlayerHealth playerHealth)
+    private void DamagePlayer(PlayerLife playerLife)
     {
-        int finalDamage = damage * 2;
-        playerHealth.TakeDamage(finalDamage);
-        Debug.Log("Enemy bullet hit player! Damage x2 = " + finalDamage);
+        playerLife.TakeDamage(damage * 2);
+        Debug.Log("Enemy bullet hit player! Mất 1 mạng (nếu không bất tử).");
     }
 }

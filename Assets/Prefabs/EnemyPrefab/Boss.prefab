@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7296158239407568878}
   - component: {fileID: 120911750294436165}
   - component: {fileID: 5269026402450152274}
-  - component: {fileID: 6626611841233755190}
   - component: {fileID: 4665738379032985431}
   - component: {fileID: 8250431414829393960}
   m_Layer: 0
@@ -76,19 +75,6 @@ MonoBehaviour:
   enrageHpThreshold: 0.35
   enrageSpinMultiplier: 1.6
   enrageFireIntervalMultiplier: 0.5
---- !u!114 &6626611841233755190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762208791746185440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 644e9ac9ee18e1c4f9638f391da5ae9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossHealth
-  maxHealth: 100
 --- !u!50 &4665738379032985431
 Rigidbody2D:
   serializedVersion: 5

@@ -9,8 +9,7 @@ using UnityEngine;
 public static class SaveSystem
 {
     private const string SAVE_FILE_NAME = "chromainversion_save.json";
-    private const int CURRENT_VERSION = 1;
-
+    private const int CURRENT_VERSION = 2; // tăng từ 1 → 2 vì đổi schema (playerHealth → playerLives)
     /// <summary>
     /// Runtime flag indicating whether the current game session was started via Continue.
     /// </summary>
@@ -112,10 +111,15 @@ public static class SaveSystem
                 data.score = 0;
             }
 
-            if (data.playerHealth < 1)
+            if (data.playerLives < 0)
             {
-                Debug.LogWarning($"[SaveSystem] Player health ({data.playerHealth}) was non-positive in save. Clamped to 1.");
-                data.playerHealth = 1;
+                Debug.LogWarning($"[SaveSystem] Invalid playerLives ({data.playerLives}) clamped to 0.");
+                data.playerLives = 0;
+            }
+
+            if (data.shotLevel > 10)
+            {
+                data.shotLevel = 10;
             }
 
             if (data.blueEnergy < 0) data.blueEnergy = 0;
@@ -123,7 +127,7 @@ public static class SaveSystem
             if (data.shotLevel < 1) data.shotLevel = 1;
             if (data.shieldCharges < 0) data.shieldCharges = 0;
 
-            Debug.Log($"[SaveSystem] Save data loaded successfully: Wave {data.currentWave}, HP {data.playerHealth}, ShotLevel {data.shotLevel}.");
+            Debug.Log($"[SaveSystem] Save data loaded successfully: Wave {data.currentWave}, Lives {data.playerLives}, ShotLevel {data.shotLevel}.");
             return data;
         }
         catch (Exception ex)

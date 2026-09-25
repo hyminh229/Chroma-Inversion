@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerColorController : ChromaPolarityBase
 {
@@ -9,7 +9,8 @@ public class PlayerColorController : ChromaPolarityBase
 
     private void HandleColorSwitch()
     {
-        if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
+        // Bỏ Space (giờ dành riêng cho Mega Beam) — chỉ còn chuột phải.
+        if (Input.GetMouseButtonDown(1))
         {
             SwitchColor();
             Debug.Log("Player switched color to: " + CurrentColor);

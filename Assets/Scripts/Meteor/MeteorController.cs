@@ -10,7 +10,7 @@ public class MeteorController : MonoBehaviour, IDestroyable
     [Header("Explosion khi chết (chỉ dùng khi meteorSize = LARGE)")]
     [SerializeField] private MeteorSize meteorSize = MeteorSize.SMALL;
     [SerializeField] private float explosionRadius = 2f;
-    [SerializeField] private int explosionDamage = 2;
+    [SerializeField] private int explosionDamage = 1;
 
     private MeteorHealth meteorHealth;
 
@@ -29,8 +29,6 @@ public class MeteorController : MonoBehaviour, IDestroyable
         meteorHealth.OnDeath -= HandleDeath;
     }
 
-    // WaveManager gọi lúc spawn để chọn quỹ đạo: chéo (Shower thường) hay
-    // thẳng đứng tốc độ cao (High-Speed), không cần 2 script riêng.
     public void ConfigureMovement(Vector2 newDirection, float newSpeed)
     {
         moveDirection = newDirection.sqrMagnitude > 0.0001f ? newDirection.normalized : Vector2.down;
@@ -42,8 +40,6 @@ public class MeteorController : MonoBehaviour, IDestroyable
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
     }
 
-    // Không còn phân biệt màu nữa — bullet nào trúng cũng gây damage bình
-    // thường. Meteor giờ đơn thuần "bắn để phá hoặc để né".
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Bullet bullet)) return;
@@ -61,10 +57,10 @@ public class MeteorController : MonoBehaviour, IDestroyable
 
         foreach (Collider2D hit in hits)
         {
-            if (hit.TryGetComponent(out PlayerHealth playerHealth))
+            if (hit.TryGetComponent(out PlayerLife playerLife))
             {
-                playerHealth.TakeDamage(explosionDamage);
-                Debug.Log("Meteor exploded! Player took " + explosionDamage + " AOE damage.");
+                playerLife.TakeDamage(explosionDamage);
+                Debug.Log("Meteor exploded! Player mất 1 mạng (nếu không bất tử).");
             }
         }
     }

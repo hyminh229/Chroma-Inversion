@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 412361996985827364}
   - component: {fileID: 2689533242101008147}
   - component: {fileID: 3797642840258202686}
+  - component: {fileID: 893329958696852909}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -118,6 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c31631681b1f1b148a365a33a67931b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyEnergyDrop
+  killScore: 50
+  killEnergy: 5
   energyOrbPrefab: {fileID: 6299849436140125768, guid: de7a06ea85ac34f4aab6a18c86e410aa, type: 3}
 --- !u!114 &5897707616289683315
 MonoBehaviour:
@@ -270,9 +273,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPolarity
   startingColor: 0
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 2689533242101008147}
   blueSprite: {fileID: 3957844691414982738, guid: e77ecf63c7f228a4b97bf4adfd541b18, type: 3}
   redSprite: {fileID: 504546293373905099, guid: a730c28457689f44fb52c01286900b5b, type: 3}
+--- !u!114 &893329958696852909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727100261008302460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9254c77238d9623428240fb360dafd23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPowerUpDrop
+  dropChance: 0.08
+  powerUpPrefabs:
+  - {fileID: 6395092276804953319, guid: 1e32a4c08c8d0794db0f85b9c05a26ef, type: 3}
+  - {fileID: 4279235323947348034, guid: 5d3c076aca7dc4a4e8727b30ddca0395, type: 3}
+  - {fileID: 7147667013161190294, guid: 894c8ab534e73134394f4d35d745b05f, type: 3}
 --- !u!1 &3827344424471875404
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public abstract class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.TryGetComponent(out PlayerHealth playerHealth)) return;
+        if (!collision.TryGetComponent(out PlayerLife playerLife)) return;
 
         ApplyEffect(collision.gameObject);
         Destroy(gameObject);
