@@ -1507,10 +1507,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerShooting
   bulletPrefab: {fileID: 3739410482566353081, guid: 88702eb5b9f2a0248ab528186c525d97, type: 3}
   firePoint: {fileID: 716798330}
-  fireRate: 0.2
+  baseFireRate: 0.2
   shotLevel: 1
-  maxShotLevel: 3
   multiShotSpreadAngle: 15
+  fireRateBoostMultiplier: 0.88
   megaBeamPrefab: {fileID: 7421420548664835183, guid: b3707719095a291479c691d1b671eca3, type: 3}
   megaBeamSpawnOffset: 5
 --- !u!114 &811968760
@@ -1527,8 +1527,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   smoothSpeed: 15
   padding: 0.5
-  playerHealth: {fileID: 811968761}
-  playerShooting: {fileID: 0}
+  playerLife: {fileID: 811968761}
+  playerShooting: {fileID: 811968758}
 --- !u!114 &811968761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1541,7 +1541,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e767ed2c06203d14f8152fb7e6678be8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHealth: 10
+  startingLives: 1
+  invulnerabilityDuration: 2
 --- !u!114 &811968763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2793,17 +2794,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveSequencer
   waveSpawners:
-  - {fileID: 1922860954}
   - {fileID: 11754572}
-  - {fileID: 1088799724}
-  - {fileID: 1077136039}
-  - {fileID: 1316158776}
-  - {fileID: 100033011}
-
   bannerUI: {fileID: 2041825244}
   bannerDuration: 1.5
   delayBetweenWaves: 1
-  playerHealth: {fileID: 0}
+  playerLife: {fileID: 0}
   playerEnergy: {fileID: 0}
   playerShooting: {fileID: 0}
   playerShield: {fileID: 0}
