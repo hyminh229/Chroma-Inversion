@@ -53,4 +53,13 @@ public class PlayerEnergy : MonoBehaviour
 
         return true;
     }
+
+    public void RestoreEnergy(int blue, int red)
+    {
+        currentBlueEnergy = Mathf.Clamp(blue, 0, maxEnergy);
+        currentRedEnergy = Mathf.Clamp(red, 0, maxEnergy);
+
+        Debug.Log("Player energy restored. Blue: " + currentBlueEnergy + "/" + maxEnergy +
+                  " | Red: " + currentRedEnergy + "/" + maxEnergy);
+    }
 }

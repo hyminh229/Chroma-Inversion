@@ -116,6 +116,15 @@ public class PlayerShooting : MonoBehaviour
         Debug.Log("Bullet upgraded! Level: " + shotLevel);
     }
 
+    public int ShotLevel => shotLevel;
+    public int MaxShotLevel => maxShotLevel;
+
+    public void SetShotLevel(int level)
+    {
+        shotLevel = Mathf.Clamp(level, 1, maxShotLevel);
+        Debug.Log("Player shot level restored: " + shotLevel + "/" + maxShotLevel);
+    }
+
     private void ShootMegaBeam()
     {
         if (megaBeamPrefab == null || firePoint == null)

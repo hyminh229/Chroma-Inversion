@@ -69,4 +69,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         Debug.Log("Player healed. HP: " + currentHealth + "/" + maxHealth);
     }
+
+    public void RestoreHealth(int health)
+    {
+        currentHealth = Mathf.Clamp(health, 1, maxHealth);
+        IsAlive = currentHealth > 0;
+        Debug.Log("Player health restored. HP: " + currentHealth + "/" + maxHealth);
+    }
 }
