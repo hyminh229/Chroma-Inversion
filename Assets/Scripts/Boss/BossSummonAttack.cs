@@ -1,9 +1,5 @@
 using UnityEngine;
 
-// Boss attack "Triệu hồi Shooter" — tái dùng đúng công thức đã ổn định ở
-// ShooterFlutterWaveSpawner (Wave 3): RandomFlutter + aimAtPlayer + fire lệch
-// pha ngẫu nhiên. Quái triệu hồi KHÔNG tính vào điều kiện hạ Boss — chỉ
-// BossHealth về 0 mới clear wave, quái phụ chỉ là áp lực thêm trong lúc đánh.
 [RequireComponent(typeof(BossHealth))]
 public class BossSummonAttack : MonoBehaviour
 {
@@ -23,6 +19,7 @@ public class BossSummonAttack : MonoBehaviour
 
     private BossHealth bossHealth;
     private float summonTimer;
+    private int totalSummoned;
 
     private void Awake()
     {
@@ -61,17 +58,20 @@ public class BossSummonAttack : MonoBehaviour
             SpawnOne(new Vector3(x, spawnY, 0f), minX, maxX);
         }
 
-        Debug.Log("Boss summoned " + minionsPerSummon + " shooter minions.");
+        totalSummoned += minionsPerSummon;
+        // Log tổng đã summon từ đầu trận — playtest xong xem số này có tăng
+        // đều theo summonInterval hay dừng lại, để xác nhận đúng nguyên nhân.
+        Debug.Log("Boss summoned " + minionsPerSummon + " minions. Tổng cộng: " + totalSummoned);
     }
 
     private void SpawnOne(Vector3 position, float minX, float maxX)
     {
         GameObject instance = Instantiate(minionPrefab, position, Quaternion.identity);
 
-        ElementColor color = Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
+        ElementColor bodyColor = Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
         if (instance.TryGetComponent(out ChromaPolarityBase polarity))
         {
-            polarity.SetColor(color);
+            polarity.SetColor(bodyColor);
         }
 
         if (instance.TryGetComponent(out EnemyController controller))
@@ -83,6 +83,9 @@ public class BossSummonAttack : MonoBehaviour
         {
             shooting.enabled = true;
             shooting.ConfigureFiring(minionFireCheckInterval, minionFireChance);
+
+            ElementColor bulletColor = Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
+            shooting.SetBulletColor(bulletColor);
         }
     }
 }

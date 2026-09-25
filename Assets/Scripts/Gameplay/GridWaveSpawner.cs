@@ -2,9 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-// Script DUY NHẤT cho 1 wave dạng lưới kiểu "Chicken Invasion". Giờ implement
-// IWaveSpawner để WaveSequencer điều khiển thời điểm bắt đầu, không tự chạy
-// trong Start() nữa (vì giờ nó là Wave 1 trong chuỗi, không đứng riêng lẻ).
 public class GridWaveSpawner : MonoBehaviour, IWaveSpawner
 {
     [Header("Formation")]
@@ -18,7 +15,6 @@ public class GridWaveSpawner : MonoBehaviour, IWaveSpawner
     [SerializeField] private float rowSpacing = 1f;
 
     [Header("Timing")]
-    [Tooltip("Khoảng nghỉ giữa lúc 1 hàng xuất hiện xong và hàng kế tiếp bắt đầu.")]
     [SerializeField] private float rowRevealDelay = 0.35f;
 
     [Header("Shooting (bỏ qua nếu enemyPrefab không có EnemyShooting)")]
@@ -67,7 +63,7 @@ public class GridWaveSpawner : MonoBehaviour, IWaveSpawner
         topRowY = topY - topMargin;
     }
 
-    private void SpawnOne(Vector3 position, ElementColor color)
+    private void SpawnOne(Vector3 position, ElementColor bodyColor)
     {
         if (enemyPrefab == null)
         {
@@ -79,7 +75,7 @@ public class GridWaveSpawner : MonoBehaviour, IWaveSpawner
 
         if (instance.TryGetComponent(out ChromaPolarityBase polarity))
         {
-            polarity.SetColor(color);
+            polarity.SetColor(bodyColor);
         }
 
         if (instance.TryGetComponent(out EnemyController controller))
@@ -90,6 +86,14 @@ public class GridWaveSpawner : MonoBehaviour, IWaveSpawner
         if (instance.TryGetComponent(out EnemyShooting shooting))
         {
             shooting.enabled = UnityEngine.Random.value < shooterChance;
+
+            if (shooting.enabled)
+            {
+                // Random ĐỘC LẬP với bodyColor — không còn phụ thuộc giá trị
+                // tĩnh gán sẵn trong Inspector của prefab.
+                ElementColor bulletColor = UnityEngine.Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
+                shooting.SetBulletColor(bulletColor);
+            }
         }
 
         if (instance.TryGetComponent(out EnemyHealth health))

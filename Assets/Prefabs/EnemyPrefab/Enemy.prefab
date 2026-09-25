@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPolarity
   startingColor: 0
-  spriteRenderer: {fileID: 3626916397498700004, guid: e77ecf63c7f228a4b97bf4adfd541b18, type: 3}
+  spriteRenderer: {fileID: 0}
   blueSprite: {fileID: 3957844691414982738, guid: e77ecf63c7f228a4b97bf4adfd541b18, type: 3}
   redSprite: {fileID: 504546293373905099, guid: a730c28457689f44fb52c01286900b5b, type: 3}
 --- !u!1 &3827344424471875404

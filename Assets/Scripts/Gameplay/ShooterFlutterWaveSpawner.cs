@@ -2,13 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-// Wave 3 — vài Enemy Shooter bay tự do (random trajectory), NGẮM và BẮN vào
-// Player. Ít địch, mỗi con bắn lệch pha ngẫu nhiên (EnemyShooting vốn đã
-// random timer + fireChance riêng từng con) nên không đồng loạt bắn cùng lúc.
 public class ShooterFlutterWaveSpawner : MonoBehaviour, IWaveSpawner
 {
     [Header("Formation")]
-    [SerializeField] private GameObject enemyPrefab; // PHẢI có EnemyShooting với aimAtPlayer = true
+    [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private int enemyCount = 4;
 
     [Header("Movement")]
@@ -63,10 +60,10 @@ public class ShooterFlutterWaveSpawner : MonoBehaviour, IWaveSpawner
 
         GameObject instance = Instantiate(enemyPrefab, position, Quaternion.identity);
 
-        ElementColor color = UnityEngine.Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
+        ElementColor bodyColor = UnityEngine.Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
         if (instance.TryGetComponent(out ChromaPolarityBase polarity))
         {
-            polarity.SetColor(color);
+            polarity.SetColor(bodyColor);
         }
 
         if (instance.TryGetComponent(out EnemyController controller))
@@ -78,6 +75,9 @@ public class ShooterFlutterWaveSpawner : MonoBehaviour, IWaveSpawner
         {
             shooting.enabled = true;
             shooting.ConfigureFiring(fireCheckInterval, fireChance);
+
+            ElementColor bulletColor = UnityEngine.Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
+            shooting.SetBulletColor(bulletColor);
         }
         else
         {
