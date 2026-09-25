@@ -1,10 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class EnergyOrb : MonoBehaviour
 {
     [SerializeField] private ElementColor color = ElementColor.BLUE;
     [SerializeField] private int energyAmount = 4;
+    [SerializeField] private int scoreValue = 20;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite blueSprite;
     [SerializeField] private Sprite redSprite;
@@ -29,8 +30,15 @@ public class EnergyOrb : MonoBehaviour
     {
         if (spriteRenderer == null) return;
 
-        spriteRenderer.sprite = color == ElementColor.BLUE ? blueSprite : redSprite;
-        spriteRenderer.color = Color.white;
+        Sprite target = color == ElementColor.BLUE ? blueSprite : redSprite;
+
+        if (target == null)
+        {
+            Debug.LogWarning(gameObject.name + ": chưa gán " + (color == ElementColor.BLUE ? "Blue" : "Red") + " Sprite trên EnergyOrb.");
+            return;
+        }
+
+        spriteRenderer.sprite = target;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -38,8 +46,9 @@ public class EnergyOrb : MonoBehaviour
         if (!collision.TryGetComponent(out PlayerEnergy playerEnergy)) return;
 
         playerEnergy.AddEnergy(color, energyAmount);
+        ScoreManager.Instance?.AddScore(scoreValue);
 
-        Debug.Log("Energy Orb collected! +" + energyAmount + " " + color + " Energy.");
+        Debug.Log("EXP Orb collected! +" + energyAmount + " " + color + " Energy, +" + scoreValue + " Score.");
 
         Destroy(gameObject);
     }

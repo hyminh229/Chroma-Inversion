@@ -14,7 +14,7 @@ public class WaveSequencer : MonoBehaviour
     [SerializeField] private float delayBetweenWaves = 1f;
 
     [Header("Player Components (Tùy chọn - tự tìm nếu để trống)")]
-    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private PlayerLife playerLife;
     [SerializeField] private PlayerEnergy playerEnergy;
     [SerializeField] private PlayerShooting playerShooting;
     [SerializeField] private PlayerShield playerShield;
@@ -25,7 +25,6 @@ public class WaveSequencer : MonoBehaviour
 
         int startWaveIndex = 0;
 
-        // Nếu bấm Continue từ Main Menu và có file save hợp lệ -> Load checkpoint
         if (SaveSystem.IsContinuing && SaveSystem.HasSave())
         {
             GameSaveData saveData = SaveSystem.LoadGame();
@@ -33,8 +32,6 @@ public class WaveSequencer : MonoBehaviour
             {
                 RestorePlayerState(saveData);
 
-                // currentWave được lưu theo định dạng 1-based (Wave 1, Wave 2...).
-                // startWaveIndex là 0-based.
                 startWaveIndex = saveData.currentWave - 1;
 
                 if (startWaveIndex < 0 || startWaveIndex >= waveSpawners.Count)
@@ -48,7 +45,6 @@ public class WaveSequencer : MonoBehaviour
                 }
             }
 
-            // Đặt lại flag sau khi đã xử lý xong
             SaveSystem.IsContinuing = false;
         }
 
@@ -60,7 +56,7 @@ public class WaveSequencer : MonoBehaviour
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
-            if (playerHealth == null) playerHealth = playerObj.GetComponent<PlayerHealth>();
+            if (playerLife == null) playerLife = playerObj.GetComponent<PlayerLife>();
             if (playerEnergy == null) playerEnergy = playerObj.GetComponent<PlayerEnergy>();
             if (playerShooting == null) playerShooting = playerObj.GetComponent<PlayerShooting>();
             if (playerShield == null) playerShield = playerObj.GetComponent<PlayerShield>();
@@ -69,9 +65,9 @@ public class WaveSequencer : MonoBehaviour
 
     private void RestorePlayerState(GameSaveData data)
     {
-        if (playerHealth != null)
+        if (playerLife != null)
         {
-            playerHealth.RestoreHealth(data.playerHealth);
+            playerLife.RestoreLives(data.playerLives);
         }
 
         if (playerEnergy != null)
@@ -88,17 +84,22 @@ public class WaveSequencer : MonoBehaviour
         {
             playerShield.RestoreShield(data.shieldCharges);
         }
+
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.RestoreScore(data.score);
+        }
     }
 
     private void SaveCheckpoint(int nextWaveIndex)
     {
         GameSaveData data = new GameSaveData();
         data.currentWave = nextWaveIndex + 1; // 1-based wave number
-        data.score = 0;
+        data.score = ScoreManager.Instance != null ? ScoreManager.Instance.TotalScore : 0;
 
-        if (playerHealth != null)
+        if (playerLife != null)
         {
-            data.playerHealth = playerHealth.CurrentHealth;
+            data.playerLives = playerLife.CurrentLives;
         }
 
         if (playerEnergy != null)
@@ -144,7 +145,6 @@ public class WaveSequencer : MonoBehaviour
             yield return new WaitUntil(() => cleared);
             spawner.OnWaveCleared -= onCleared;
 
-            // Wave hoàn thành -> Lưu checkpoint cho wave kế tiếp
             int nextWaveIndex = i + 1;
             if (nextWaveIndex < waveSpawners.Count)
             {
@@ -152,13 +152,12 @@ public class WaveSequencer : MonoBehaviour
             }
             else
             {
-                // Hoàn thành tất cả các wave trong game -> xóa save để lần chơi sau bắt đầu mới
                 SaveSystem.DeleteSave();
             }
 
             yield return new WaitForSeconds(delayBetweenWaves);
         }
 
-        Debug.Log("Tất cả wave đã hoàn thành! (Boss chưa được cài đặt — Phase 7)");
+        Debug.Log("Tất cả wave đã hoàn thành!");
     }
 }

@@ -1,20 +1,27 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
     [Header("Normal Shooting")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float fireRate = 0.2f;
+    [SerializeField] private float baseFireRate = 0.2f;
 
-    [Header("Bullet Upgrade")]
+    [Header("Bullet Upgrade (Level 1-10)")]
     [SerializeField] private int shotLevel = 1;
-    [SerializeField] private int maxShotLevel = 3;
     [SerializeField] private float multiShotSpreadAngle = 15f;
+    [SerializeField][Range(0.5f, 0.95f)] private float fireRateBoostMultiplier = 0.88f;
 
     [Header("Mega Beam")]
     [SerializeField] private GameObject megaBeamPrefab;
     [SerializeField] private float megaBeamSpawnOffset = 1.5f;
+
+    private const int MaxShotLevel = 10;
+
+    // Số tia theo Level (index 0 = Level 1) — đúng bảng: 1,2,2,3,3,3,4,4,4,5.
+    private static readonly int[] BulletCountByLevel = { 1, 2, 2, 3, 3, 3, 4, 4, 4, 5 };
+    // Level nào là mốc "tăng tốc độ bắn" thay vì thêm tia (Level 3,5,6,8,9).
+    private static readonly bool[] IsFireRateBoostLevel = { false, false, true, false, true, true, false, true, true, false };
 
     private PlayerColorController colorController;
     private PlayerEnergy playerEnergy;
@@ -23,6 +30,7 @@ public class PlayerShooting : MonoBehaviour
     private bool isChanneling;
 
     public bool IsChanneling => isChanneling;
+    public int ShotLevel => shotLevel;
 
     private void Awake()
     {
@@ -42,7 +50,7 @@ public class PlayerShooting : MonoBehaviour
 
         timer += Time.deltaTime;
 
-        if (Input.GetMouseButton(0) && timer >= fireRate)
+        if (Input.GetMouseButton(0) && timer >= GetCurrentFireRate())
         {
             Shoot();
             timer = 0f;
@@ -53,7 +61,8 @@ public class PlayerShooting : MonoBehaviour
     {
         if (isChanneling) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        // Đổi từ phím E sang Space.
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             ShootMegaBeam();
         }
@@ -67,7 +76,7 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
 
-        int bulletCount = GetBulletCountForLevel();
+        int bulletCount = BulletCountByLevel[shotLevel - 1];
         float startAngle = -(bulletCount - 1) / 2f * multiShotSpreadAngle;
 
         for (int i = 0; i < bulletCount; i++)
@@ -77,9 +86,22 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    private int GetBulletCountForLevel()
+    // Nhân dồn multiplier cho MỖI mốc tăng tốc đã đạt tới tính từ Level 1 —
+    // đúng khớp việc Lv3/5/6/8/9 đều làm bắn nhanh hơn cộng dồn, không phải
+    // chỉ có hiệu lực ở đúng level đó rồi thôi.
+    private float GetCurrentFireRate()
     {
-        return (shotLevel - 1) * 2 + 1;
+        float rate = baseFireRate;
+
+        for (int i = 0; i < shotLevel; i++)
+        {
+            if (IsFireRateBoostLevel[i])
+            {
+                rate *= fireRateBoostMultiplier;
+            }
+        }
+
+        return rate;
     }
 
     private void SpawnBullet(float angleOffset)
@@ -106,23 +128,21 @@ public class PlayerShooting : MonoBehaviour
 
     public void UpgradeShot()
     {
-        if (shotLevel >= maxShotLevel)
+        if (shotLevel >= MaxShotLevel)
         {
-            Debug.Log("Bullet already at max level.");
+            Debug.Log("Bullet already at max level (10).");
             return;
         }
 
         shotLevel++;
-        Debug.Log("Bullet upgraded! Level: " + shotLevel);
+        Debug.Log("Bullet upgraded! Level: " + shotLevel + " (" + BulletCountByLevel[shotLevel - 1] + " tia)");
     }
 
-    public int ShotLevel => shotLevel;
-    public int MaxShotLevel => maxShotLevel;
-
+    // Dùng khi Continue — set thẳng level đã lưu, không tăng dần từng bước như UpgradeShot().
     public void SetShotLevel(int level)
     {
-        shotLevel = Mathf.Clamp(level, 1, maxShotLevel);
-        Debug.Log("Player shot level restored: " + shotLevel + "/" + maxShotLevel);
+        shotLevel = Mathf.Clamp(level, 1, MaxShotLevel);
+        Debug.Log("Player shot level restored: " + shotLevel + "/" + MaxShotLevel + " (" + BulletCountByLevel[shotLevel - 1] + " tia)");
     }
 
     private void ShootMegaBeam()

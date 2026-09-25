@@ -4,7 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float smoothSpeed = 15f;
     [SerializeField] private float padding = 0.5f;
-    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private PlayerLife playerLife;
     [SerializeField] private PlayerShooting playerShooting;
 
     private Camera mainCamera;
@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!playerHealth.IsAlive) return;
+        if (!playerLife.IsAlive) return;
         if (playerShooting != null && playerShooting.IsChanneling) return;
 
         MoveWithMouse();

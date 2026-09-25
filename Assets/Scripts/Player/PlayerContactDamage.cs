@@ -2,41 +2,39 @@ using UnityEngine;
 
 public class PlayerContactDamage : MonoBehaviour
 {
-    [SerializeField] private int enemyContactDamage = 2;
-    [SerializeField] private int meteorContactDamage = 3;
-    [SerializeField] private int bossContactDamage = 3;
+    [SerializeField] private int enemyContactDamage = 1;
+    [SerializeField] private int meteorContactDamage = 1;
+    [SerializeField] private int bossContactDamage = 1;
 
-    private PlayerHealth playerHealth;
+    private PlayerLife playerLife;
 
     private void Awake()
     {
-        playerHealth = GetComponent<PlayerHealth>();
+        playerLife = GetComponent<PlayerLife>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out EnemyController enemy))
         {
-            playerHealth.TakeDamage(enemyContactDamage);
+            playerLife.TakeDamage(enemyContactDamage);
             enemy.DestroyObject();
 
-            Debug.Log("Player va chạm Enemy! -" + enemyContactDamage + " HP.");
+            Debug.Log("Player va chạm Enemy!");
         }
         else if (collision.TryGetComponent(out MeteorController meteor))
         {
-            playerHealth.TakeDamage(meteorContactDamage);
+            playerLife.TakeDamage(meteorContactDamage);
 
-            Debug.Log("Player va chạm Meteor! -" + meteorContactDamage + " HP.");
+            Debug.Log("Player va chạm Meteor!");
         }
         else
         {
-            // Boss không còn Collider2D trên chính root (đã chuyển xuống 2 box
-            // con TopHalf/BottomHalf) nên phải tìm ngược lên bằng GetComponentInParent.
             BossController boss = collision.GetComponentInParent<BossController>();
             if (boss != null)
             {
-                playerHealth.TakeDamage(bossContactDamage);
-                Debug.Log("Player va chạm Boss! -" + bossContactDamage + " HP.");
+                playerLife.TakeDamage(bossContactDamage);
+                Debug.Log("Player va chạm Boss!");
             }
         }
     }
