@@ -9,24 +9,44 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 931048014912229516, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
+      propertyPath: m_Size.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 931048014912229516, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
+      propertyPath: m_Size.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 931048014912229516, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 3621739095085861641, guid: 024127449e148dc43b528180200f6116, type: 3}
+    - target: {fileID: 931048014912229516, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
+      propertyPath: m_DrawMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3582231415078449450, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: meteorSize
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3586086709681620591, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: m_LocalScale.x
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3586086709681620591, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3586086709681620591, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5574349256128517269, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: m_Name
       value: Meteor_Large
+      objectReference: {fileID: 0}
+    - target: {fileID: 7217073541266136270, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
+      propertyPath: m_DrawMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8052745831291946452, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: startingColor

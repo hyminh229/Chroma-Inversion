@@ -35,12 +35,17 @@ public class EnemyShooting : MonoBehaviour
         }
     }
 
-    // WaveSpawner gọi để mỗi con trong wave có nhịp bắn hơi khác nhau,
-    // tránh cả đám bắn y hệt cùng 1 fire rate.
     public void ConfigureFiring(float newFireCheckInterval, float newFireChance)
     {
         fireCheckInterval = newFireCheckInterval;
         fireChance = newFireChance;
+    }
+
+    // Cho wave spawner random màu đạn NGAY LÚC SPAWN, độc lập với màu thân —
+    // thay vì phải vào tay chỉnh giá trị khởi đầu cố định trong Inspector.
+    public void SetBulletColor(ElementColor newColor)
+    {
+        bulletColor = newColor;
     }
 
     private void Shoot()
