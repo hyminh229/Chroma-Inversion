@@ -11,7 +11,12 @@ public class EnemyBullet : ProjectileBase
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out PlayerLife playerLife)) return;
-        if (!collision.TryGetComponent(out PlayerColorController playerColor)) return;
+
+        // PlayerColorController nằm trên GameObject con "Sprite", không cùng
+        // GameObject với Collider2D của Player (root) — TryGetComponent chỉ tìm
+        // đúng 1 GameObject nên luôn fail. Phải tìm XUỐNG con bằng GetComponentInChildren.
+        PlayerColorController playerColor = collision.GetComponentInChildren<PlayerColorController>();
+        if (playerColor == null) return;
 
         if (ColorType == playerColor.CurrentColor)
         {
@@ -23,7 +28,8 @@ public class EnemyBullet : ProjectileBase
         }
         else
         {
-            DamagePlayer(playerLife);
+            playerLife.LoseLife();
+            Debug.Log("Enemy bullet hit player! Mất 1 mạng (nếu không bất tử).");
         }
 
         DestroyObject();
@@ -47,11 +53,5 @@ public class EnemyBullet : ProjectileBase
         Debug.Log(isPerfect
             ? "Perfect Absorb! +" + energyGained + " " + ColorType + " Energy, +" + scoreGained + " Score."
             : "Enemy bullet absorbed! +" + energyGained + " " + ColorType + " Energy, +" + scoreGained + " Score.");
-    }
-
-    private void DamagePlayer(PlayerLife playerLife)
-    {
-        playerLife.TakeDamage(damage * 2);
-        Debug.Log("Enemy bullet hit player! Mất 1 mạng (nếu không bất tử).");
     }
 }

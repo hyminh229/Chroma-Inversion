@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class PlayerContactDamage : MonoBehaviour
 {
-    [SerializeField] private int enemyContactDamage = 1;
-    [SerializeField] private int meteorContactDamage = 1;
-    [SerializeField] private int bossContactDamage = 1;
-
     private PlayerLife playerLife;
 
     private void Awake()
@@ -17,15 +13,13 @@ public class PlayerContactDamage : MonoBehaviour
     {
         if (collision.TryGetComponent(out EnemyController enemy))
         {
-            playerLife.TakeDamage(enemyContactDamage);
+            playerLife.LoseLife();
             enemy.DestroyObject();
-
             Debug.Log("Player va chạm Enemy!");
         }
         else if (collision.TryGetComponent(out MeteorController meteor))
         {
-            playerLife.TakeDamage(meteorContactDamage);
-
+            playerLife.LoseLife();
             Debug.Log("Player va chạm Meteor!");
         }
         else
@@ -33,7 +27,7 @@ public class PlayerContactDamage : MonoBehaviour
             BossController boss = collision.GetComponentInParent<BossController>();
             if (boss != null)
             {
-                playerLife.TakeDamage(bossContactDamage);
+                playerLife.LoseLife();
                 Debug.Log("Player va chạm Boss!");
             }
         }

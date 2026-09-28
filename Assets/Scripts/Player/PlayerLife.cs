@@ -16,20 +16,17 @@ public class PlayerLife : MonoBehaviour
         IsAlive = true;
     }
 
-    // Giữ tên TakeDamage để không phải sửa lại mọi nơi đang gọi (EnemyBullet,
-    // MeteorController, PlayerContactDamage...) — nhưng bản chất không còn
-    // trừ dần theo "damage", bất kỳ hit nào lọt qua (không bị Shield chặn,
-    // không đang bất tử) đều tính là mất NGAY 1 mạng.
-    public void TakeDamage(int damage)
+    // Bất kỳ va chạm/trúng đòn nào lọt qua Shield và không đang bất tử đều
+    // trừ NGAY 1 mạng — không còn khái niệm "damage amount".
+    public void LoseLife()
     {
         if (!IsAlive) return;
         if (IsInvulnerable) return;
-        if (damage <= 0) return;
 
         if (CurrentLives > 0)
         {
             CurrentLives--;
-            Debug.Log("Player mất 1 mạng do va chạm/trúng đạn. Còn lại: " + CurrentLives);
+            Debug.Log("Player mất 1 mạng. Còn lại: " + CurrentLives);
             StartCoroutine(RespawnInvulnerability());
         }
         else
@@ -45,6 +42,7 @@ public class PlayerLife : MonoBehaviour
         CurrentLives += amount;
         Debug.Log("Nhặt Life! Còn lại: " + CurrentLives);
     }
+
     public void RestoreLives(int lives)
     {
         CurrentLives = Mathf.Max(0, lives);
@@ -52,6 +50,7 @@ public class PlayerLife : MonoBehaviour
         IsInvulnerable = false;
         Debug.Log("Player lives restored: " + CurrentLives);
     }
+
     private IEnumerator RespawnInvulnerability()
     {
         IsInvulnerable = true;
@@ -62,8 +61,6 @@ public class PlayerLife : MonoBehaviour
     private void Die()
     {
         IsAlive = false;
-
         Debug.Log("Player Died! Game Over.");
-        // Game Over UI xử lý ở Phase 8.
     }
 }
