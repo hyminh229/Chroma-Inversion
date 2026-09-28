@@ -94,13 +94,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b691f87f9644194d84c97292a87fca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  pattern: 1
+  pattern: 0
   moveSpeed: 4
   shouldStop: 0
   stopY: -3
   hoverY: 2
   horizontalRange: 3
   horizontalSpeed: 2
+  idleSwayRange: 0.1
+  idleSwaySpeed: 3
   orbitCenter: {x: 0, y: 0}
   orbitRadius: 3
   orbitAngularSpeed: 60

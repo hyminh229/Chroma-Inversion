@@ -8,7 +8,8 @@ public enum MovementPattern
     RandomFlutter,
     SideToSideDescent,
     DiagonalDrift,
-    Stationary
+    Stationary,
+    IdleSway
 }
 
 public class EnemyController : MonoBehaviour, IDestroyable
@@ -25,6 +26,10 @@ public class EnemyController : MonoBehaviour, IDestroyable
     [SerializeField] private float hoverY = 2f;
     [SerializeField] private float horizontalRange = 3f;
     [SerializeField] private float horizontalSpeed = 2f;
+
+    [Header("Idle Sway (đứng yên nhưng lắc ngang nhẹ quanh vị trí spawn)")]
+    [SerializeField] private float idleSwayRange = 0.1f;
+    [SerializeField] private float idleSwaySpeed = 3f;
 
     [Header("Orbit Point")]
     [SerializeField] private Vector2 orbitCenter = Vector2.zero;
@@ -44,6 +49,8 @@ public class EnemyController : MonoBehaviour, IDestroyable
     private Vector2 hoverStartPos;
     private bool hoverReady;
     private Vector2 descentBasePos;
+    private Vector2 idleSwayBasePos;
+    private float idleSwayPhaseOffset;
 
     private float minX = float.NegativeInfinity;
     private float maxX = float.PositiveInfinity;
@@ -56,6 +63,9 @@ public class EnemyController : MonoBehaviour, IDestroyable
         flutterTarget = transform.position;
         hoverStartPos = transform.position;
         descentBasePos = transform.position;
+        idleSwayBasePos = transform.position;
+        // Lệch pha ngẫu nhiên để cả hàng không lắc đồng bộ y hệt nhau — nhìn tự nhiên hơn.
+        idleSwayPhaseOffset = Random.Range(0f, Mathf.PI * 2f);
     }
 
     private void Update()
@@ -69,6 +79,7 @@ public class EnemyController : MonoBehaviour, IDestroyable
             case MovementPattern.SideToSideDescent: MoveSideToSideDescent(); break;
             case MovementPattern.DiagonalDrift: MoveDiagonalDrift(); break;
             case MovementPattern.Stationary: break;
+            case MovementPattern.IdleSway: MoveIdleSway(); break;
         }
 
         ClampHorizontalBounds();
@@ -120,6 +131,15 @@ public class EnemyController : MonoBehaviour, IDestroyable
 
         float offsetX = Mathf.Sin(Time.time * horizontalSpeed) * horizontalRange;
         transform.position = new Vector2(hoverStartPos.x + offsetX, transform.position.y);
+    }
+
+    // Đứng nguyên tại chỗ spawn, chỉ lắc ngang nhẹ — dùng cho đội hình Grid (Wave 4)
+    // để đỡ trông "chết cứng" mà không phá vỡ formation.
+    private void MoveIdleSway()
+    {
+        float offsetX = Mathf.Sin(Time.time * idleSwaySpeed + idleSwayPhaseOffset) * idleSwayRange;
+        transform.position = new Vector2(idleSwayBasePos.x + offsetX, idleSwayBasePos.y);
+        HasStopped = true;
     }
 
     private void MoveOrbit()

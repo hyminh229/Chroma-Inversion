@@ -80,7 +80,7 @@ public class GridWaveSpawner : MonoBehaviour, IWaveSpawner
 
         if (instance.TryGetComponent(out EnemyController controller))
         {
-            controller.ConfigureMovement(MovementPattern.Stationary, 0f, float.NegativeInfinity, float.PositiveInfinity);
+            controller.ConfigureMovement(MovementPattern.IdleSway, 0f, float.NegativeInfinity, float.PositiveInfinity);
         }
 
         if (instance.TryGetComponent(out EnemyShooting shooting))

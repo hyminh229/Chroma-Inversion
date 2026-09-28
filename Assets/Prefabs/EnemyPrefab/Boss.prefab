@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 5269026402450152274}
   - component: {fileID: 4665738379032985431}
   - component: {fileID: 8250431414829393960}
+  - component: {fileID: 5577567149759907979}
+  - component: {fileID: 8181149172640459754}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -64,14 +66,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
   spinSpeed: 120
-  spinDuration: 2
   moveDuration: 1.2
+  horizontalMargin: 2.5
   firePoints:
   - {fileID: 5014559886092277190}
   - {fileID: 3742049010085619264}
-  bulletPrefab: {fileID: 3739410482566353081, guid: f752c85b97bb57747a3aa65aa8f12927, type: 3}
+  bulletPrefab: {fileID: 3130722402176245513, guid: 0355f8195e525924aacac43b11272a04, type: 3}
   fireInterval: 0.8
-  fireChance: 0.8
+  fireChance: 0.5
   enrageHpThreshold: 0.35
   enrageSpinMultiplier: 1.6
   enrageFireIntervalMultiplier: 0.5
@@ -116,12 +118,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossSummonAttack
   summonInterval: 10
   minionsPerSummon: 3
+  maxAliveMinions: 6
   minionPrefab: {fileID: 8078699811275572655, guid: d5fb47a190426c340823f8650ceb9c23, type: 3}
   minionMoveSpeed: 3
   minionFireCheckInterval: 1.5
   minionFireChance: 0.35
   horizontalMargin: 1
   topSpawnMargin: 1.5
+--- !u!114 &5577567149759907979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762208791746185440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c5cbe0c98e61694bb4e83992c121428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossFanShotAttack
+  bulletPrefab: {fileID: 3130722402176245513, guid: 0355f8195e525924aacac43b11272a04, type: 3}
+  bulletCount: 7
+  spreadAngle: 60
+  bulletSpeed: 6
+  bulletColor: 1
+  cooldown: 10
+--- !u!114 &8181149172640459754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762208791746185440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d133b2d7e4b4c414c80a6f59cabe367a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossTripleShotAttack
+  bulletPrefab: {fileID: 3130722402176245513, guid: 0355f8195e525924aacac43b11272a04, type: 3}
+  bulletCount: 3
+  bulletSpacing: 1
+  bulletSpeed: 6
+  bulletColor: 0
+  cooldown: 15
 --- !u!1 &5470439179262802352
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +188,7 @@ Transform:
   m_GameObject: {fileID: 5470439179262802352}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -252,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 7036947365076138109}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

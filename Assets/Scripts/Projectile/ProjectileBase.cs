@@ -41,6 +41,13 @@ public abstract class ProjectileBase : MonoBehaviour, IDestroyable
         damage = newDamage;
     }
 
+    // Cho các attack pattern (Boss Triple Shot, Fan Shot...) chỉnh tốc độ đạn
+    // riêng qua Inspector thay vì phải sửa tốc độ mặc định trên prefab gốc.
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+
     private void ApplySprite(Sprite target)
     {
         if (spriteRenderer == null) return;

@@ -5,17 +5,18 @@ using UnityEngine;
 public class BossController : MonoBehaviour
 {
     [Header("Spin (xoay tại chỗ quanh tâm — giống bánh xe, KHÔNG di chuyển trong lúc này)")]
-    [SerializeField] private float spinSpeed = 120f; // độ/giây — dấu (+/-) cố định 1 chiều, không đổi ngẫu nhiên nữa
-    [SerializeField] private float spinDuration = 2f;
+    [SerializeField] private float spinSpeed = 120f; // độ/giây — cũng quyết định luôn thời gian xoay (180°/spinSpeed)
 
     [Header("Move (di chuyển sang vị trí X mới — KHÔNG xoay trong lúc này)")]
     [SerializeField] private float moveDuration = 1.2f;
+    [SerializeField] private float horizontalMargin = 2.5f; // chừa lề theo bề rộng sprite Boss, tránh lòi ra ngoài màn hình
 
     [Header("Spread Fire (bắn xuyên suốt cả 2 pha)")]
     [SerializeField] private Transform[] firePoints;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float fireInterval = 0.8f;
     [SerializeField][Range(0f, 1f)] private float fireChance = 0.8f;
+    [SerializeField] private float aimRotationOffset = -90f; // giống EnemyShooting: bù trừ vì sprite đạn hướng "up" mặc định
 
     [Header("Enrage (tự tăng tốc khi HP xuống thấp)")]
     [SerializeField][Range(0f, 1f)] private float enrageHpThreshold = 0.35f;
@@ -25,8 +26,10 @@ public class BossController : MonoBehaviour
     public bool IsEnraged { get; private set; }
 
     private BossHealth bossHealth;
+    private Transform player;
     private float fireTimer;
     private float minX, maxX;
+    private bool isSpinning;
 
     private void Awake()
     {
@@ -45,7 +48,14 @@ public class BossController : MonoBehaviour
 
     private void Start()
     {
-        ScreenBoundsUtil.GetWorldBounds(out minX, out maxX, out _, out _);
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null) player = playerObject.transform;
+        else Debug.LogWarning("BossController could not find Player. Make sure Player has the 'Player' tag.");
+
+        ScreenBoundsUtil.GetWorldBounds(out float rawMinX, out float rawMaxX, out _, out _);
+        minX = rawMinX + horizontalMargin;
+        maxX = rawMaxX - horizontalMargin;
+
         StartCoroutine(BehaviorLoop());
     }
 
@@ -54,8 +64,6 @@ public class BossController : MonoBehaviour
         HandleFiring();
     }
 
-    // Spin tại chỗ xong HẲN mới chuyển qua Move — 2 pha tách biệt hoàn toàn,
-    // không còn chạy song song trong Update() như bản trước.
     private IEnumerator BehaviorLoop()
     {
         while (bossHealth.IsAlive)
@@ -69,21 +77,27 @@ public class BossController : MonoBehaviour
 
     private IEnumerator SpinPhase()
     {
-        float t = 0f;
+        isSpinning = true;
 
-        while (t < spinDuration)
+        float speed = IsEnraged ? spinSpeed * enrageSpinMultiplier : spinSpeed;
+        float duration = 180f / speed;
+
+        float startZ = transform.eulerAngles.z;
+        float targetZ = startZ + 180f;
+
+        float t = 0f;
+        while (t < duration)
         {
             t += Time.deltaTime;
-            float speed = IsEnraged ? spinSpeed * enrageSpinMultiplier : spinSpeed;
-            transform.Rotate(0f, 0f, speed * Time.deltaTime);
+            float z = Mathf.Lerp(startZ, targetZ, Mathf.Clamp01(t / duration));
+            transform.rotation = Quaternion.Euler(0f, 0f, z);
             yield return null;
         }
 
-        // Snap về đúng bội số 180° gần nhất — đảm bảo LUÔN dừng ở trạng thái lộ
-        // rõ 1 màu trên/1 màu dưới, bất kể spinSpeed/spinDuration/enrage được
-        // tune thế nào sau này, không cần tự nhẩm cho chia hết 180.
-        float snappedZ = Mathf.Round(transform.eulerAngles.z / 180f) * 180f;
-        transform.rotation = Quaternion.Euler(0f, 0f, snappedZ);
+        transform.rotation = Quaternion.Euler(0f, 0f, targetZ);
+
+        isSpinning = false;
+        fireTimer = 0f;
     }
 
     private IEnumerator MovePhase()
@@ -108,36 +122,64 @@ public class BossController : MonoBehaviour
 
     private void HandleFiring()
     {
+        if (isSpinning) return;
+        if (player == null) return;
+
         fireTimer += Time.deltaTime;
         float interval = IsEnraged ? fireInterval * enrageFireIntervalMultiplier : fireInterval;
 
         if (fireTimer >= interval)
         {
             fireTimer = 0f;
-            FireFromAllPoints();
+            FireFromLowerPoint();
         }
     }
 
-    private void FireFromAllPoints()
+    private void FireFromLowerPoint()
     {
-        if (firePoints == null) return;
+        Transform lowerPoint = GetLowerFirePoint();
+        if (lowerPoint == null) return;
+        if (Random.value > fireChance) return;
+
+        FireOne(lowerPoint);
+    }
+
+    private Transform GetLowerFirePoint()
+    {
+        if (firePoints == null) return null;
+
+        Transform lowest = null;
+        float lowestY = float.PositiveInfinity;
 
         foreach (Transform point in firePoints)
         {
             if (point == null) continue;
-            if (Random.value > fireChance) continue;
 
-            FireOne(point);
+            if (point.position.y < lowestY)
+            {
+                lowestY = point.position.y;
+                lowest = point;
+            }
         }
+
+        return lowest;
     }
 
+    // Bắn TỪ vị trí firePoint (để đúng "nửa trên/nửa dưới" theo yêu cầu),
+    // nhưng HƯỚNG bắn tính riêng từ firePoint -> Player, hoàn toàn độc lập
+    // với rotation hiện tại của Boss (khác point.rotation cũ — cái đó chỉ
+    // phản ánh góc xoay của Boss, không liên quan Player).
     private void FireOne(Transform point)
     {
         if (bulletPrefab == null) return;
 
+        Vector2 direction = (Vector2)player.position - (Vector2)point.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion aimRotation = Quaternion.Euler(0f, 0f, angle + aimRotationOffset);
+
         GameObject bulletObject = ObjectPooler.Instance != null
-            ? ObjectPooler.Instance.Spawn(bulletPrefab, point.position, point.rotation)
-            : Instantiate(bulletPrefab, point.position, point.rotation);
+            ? ObjectPooler.Instance.Spawn(bulletPrefab, point.position, aimRotation)
+            : Instantiate(bulletPrefab, point.position, aimRotation);
 
         if (bulletObject == null) return;
         if (!bulletObject.TryGetComponent(out EnemyBullet enemyBullet)) return;

@@ -7,6 +7,9 @@ public class BossSummonAttack : MonoBehaviour
     [SerializeField] private float summonInterval = 10f;
     [SerializeField] private int minionsPerSummon = 3;
 
+    [Header("Giới hạn — không cho vượt quá số quái shooter đang sống")]
+    [SerializeField] private int maxAliveMinions = 6;
+
     [Header("Minion Prefab (PHẢI có EnemyController + EnemyHealth + EnemyPolarity + EnemyShooting với aimAtPlayer = true)")]
     [SerializeField] private GameObject minionPrefab;
     [SerializeField] private float minionMoveSpeed = 3f;
@@ -20,6 +23,7 @@ public class BossSummonAttack : MonoBehaviour
     private BossHealth bossHealth;
     private float summonTimer;
     private int totalSummoned;
+    private int aliveMinionCount;
 
     private void Awake()
     {
@@ -47,21 +51,28 @@ public class BossSummonAttack : MonoBehaviour
             return;
         }
 
+        int remainingSlots = maxAliveMinions - aliveMinionCount;
+        if (remainingSlots <= 0)
+        {
+            Debug.Log("BossSummonAttack: đã đủ " + maxAliveMinions + " shooter đang sống — bỏ qua lượt summon này.");
+            return;
+        }
+
+        int spawnCount = Mathf.Min(minionsPerSummon, remainingSlots);
+
         ScreenBoundsUtil.GetWorldBounds(out float rawMinX, out float rawMaxX, out _, out float topY);
         float minX = rawMinX + horizontalMargin;
         float maxX = rawMaxX - horizontalMargin;
         float spawnY = topY + topSpawnMargin;
 
-        for (int i = 0; i < minionsPerSummon; i++)
+        for (int i = 0; i < spawnCount; i++)
         {
             float x = Random.Range(minX, maxX);
             SpawnOne(new Vector3(x, spawnY, 0f), minX, maxX);
         }
 
-        totalSummoned += minionsPerSummon;
-        // Log tổng đã summon từ đầu trận — playtest xong xem số này có tăng
-        // đều theo summonInterval hay dừng lại, để xác nhận đúng nguyên nhân.
-        Debug.Log("Boss summoned " + minionsPerSummon + " minions. Tổng cộng: " + totalSummoned);
+        totalSummoned += spawnCount;
+        Debug.Log("Boss summoned " + spawnCount + " minions. Đang sống: " + aliveMinionCount + "/" + maxAliveMinions + ". Tổng cộng: " + totalSummoned);
     }
 
     private void SpawnOne(Vector3 position, float minX, float maxX)
@@ -87,5 +98,23 @@ public class BossSummonAttack : MonoBehaviour
             ElementColor bulletColor = Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
             shooting.SetBulletColor(bulletColor);
         }
+
+        aliveMinionCount++;
+
+        if (instance.TryGetComponent(out EnemyHealth health))
+        {
+            health.OnDeath += HandleMinionDeath;
+        }
+        else
+        {
+            // Không track được cái chết của con này -> tự trừ ngay để tránh count bị kẹt.
+            aliveMinionCount--;
+        }
+    }
+
+    private void HandleMinionDeath()
+    {
+        aliveMinionCount--;
+        if (aliveMinionCount < 0) aliveMinionCount = 0;
     }
 }

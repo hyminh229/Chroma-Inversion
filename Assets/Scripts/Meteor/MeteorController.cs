@@ -10,7 +10,6 @@ public class MeteorController : MonoBehaviour, IDestroyable
     [Header("Explosion khi chết (chỉ dùng khi meteorSize = LARGE)")]
     [SerializeField] private MeteorSize meteorSize = MeteorSize.SMALL;
     [SerializeField] private float explosionRadius = 2f;
-    [SerializeField] private int explosionDamage = 1;
 
     private MeteorHealth meteorHealth;
 
@@ -59,7 +58,7 @@ public class MeteorController : MonoBehaviour, IDestroyable
         {
             if (hit.TryGetComponent(out PlayerLife playerLife))
             {
-                playerLife.TakeDamage(explosionDamage);
+                playerLife.LoseLife();
                 Debug.Log("Meteor exploded! Player mất 1 mạng (nếu không bất tử).");
             }
         }
