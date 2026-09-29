@@ -3,7 +3,25 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager Instance { get; private set; }
+    private static ScoreManager instance;
+    public static ScoreManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindAnyObjectByType<ScoreManager>();
+                if (instance == null)
+                {
+                    GameObject go = new GameObject("ScoreManager");
+                    instance = go.AddComponent<ScoreManager>();
+                    Debug.Log("[ScoreManager] Auto-created ScoreManager in scene.");
+                }
+            }
+            return instance;
+        }
+        private set => instance = value;
+    }
 
     public int TotalScore { get; private set; }
 
@@ -11,13 +29,13 @@ public class ScoreManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        instance = this;
     }
 
     public void RestoreScore(int score)

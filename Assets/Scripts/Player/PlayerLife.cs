@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,13 @@ public class PlayerLife : MonoBehaviour
     public int CurrentLives { get; private set; }
     public bool IsAlive { get; private set; }
     public bool IsInvulnerable { get; private set; }
+
+    public event Action<int> OnLifeChanged;
+    public event Action OnLifeLost;
+    public event Action OnRespawn;
+    public event Action OnGameOver;
+
+    private Coroutine invulnerabilityCoroutine;
 
     private void Awake()
     {
@@ -23,14 +31,25 @@ public class PlayerLife : MonoBehaviour
         if (!IsAlive) return;
         if (IsInvulnerable) return;
 
-        if (CurrentLives > 0)
+        if (CurrentLives > 1)
         {
             CurrentLives--;
             Debug.Log("Player mất 1 mạng. Còn lại: " + CurrentLives);
-            StartCoroutine(RespawnInvulnerability());
+            OnLifeChanged?.Invoke(CurrentLives);
+            OnLifeLost?.Invoke();
+
+            if (invulnerabilityCoroutine != null)
+            {
+                StopCoroutine(invulnerabilityCoroutine);
+            }
+            invulnerabilityCoroutine = StartCoroutine(RespawnInvulnerability());
         }
         else
         {
+            CurrentLives = 0;
+            Debug.Log("Player mất mạng cuối cùng. Còn lại: 0");
+            OnLifeChanged?.Invoke(CurrentLives);
+            OnLifeLost?.Invoke();
             Die();
         }
     }
@@ -41,14 +60,16 @@ public class PlayerLife : MonoBehaviour
 
         CurrentLives += amount;
         Debug.Log("Nhặt Life! Còn lại: " + CurrentLives);
+        OnLifeChanged?.Invoke(CurrentLives);
     }
 
     public void RestoreLives(int lives)
     {
         CurrentLives = Mathf.Max(0, lives);
-        IsAlive = true;
+        IsAlive = CurrentLives > 0;
         IsInvulnerable = false;
         Debug.Log("Player lives restored: " + CurrentLives);
+        OnLifeChanged?.Invoke(CurrentLives);
     }
 
     private IEnumerator RespawnInvulnerability()
@@ -56,11 +77,23 @@ public class PlayerLife : MonoBehaviour
         IsInvulnerable = true;
         yield return new WaitForSeconds(invulnerabilityDuration);
         IsInvulnerable = false;
+        invulnerabilityCoroutine = null;
+        OnRespawn?.Invoke();
     }
 
     private void Die()
     {
+        if (!IsAlive) return;
         IsAlive = false;
+
+        if (invulnerabilityCoroutine != null)
+        {
+            StopCoroutine(invulnerabilityCoroutine);
+            invulnerabilityCoroutine = null;
+        }
+        IsInvulnerable = false;
+
         Debug.Log("Player Died! Game Over.");
+        OnGameOver?.Invoke();
     }
 }

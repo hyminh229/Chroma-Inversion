@@ -19,6 +19,10 @@ public class WaveSequencer : MonoBehaviour
     [SerializeField] private PlayerShooting playerShooting;
     [SerializeField] private PlayerShield playerShield;
 
+    public event Action OnAllWavesCompleted;
+    public int CurrentWave { get; private set; } = 1;
+    private bool allWavesCompleted;
+
     private void Start()
     {
         FindPlayerReferences();
@@ -48,6 +52,7 @@ public class WaveSequencer : MonoBehaviour
             SaveSystem.IsContinuing = false;
         }
 
+        CurrentWave = startWaveIndex + 1;
         StartCoroutine(RunSequence(startWaveIndex));
     }
 
@@ -125,6 +130,8 @@ public class WaveSequencer : MonoBehaviour
     {
         for (int i = startIndex; i < waveSpawners.Count; i++)
         {
+            CurrentWave = i + 1;
+
             if (!(waveSpawners[i] is IWaveSpawner spawner))
             {
                 Debug.LogError(waveSpawners[i].name + " không implement IWaveSpawner — bỏ qua.");
@@ -159,5 +166,10 @@ public class WaveSequencer : MonoBehaviour
         }
 
         Debug.Log("Tất cả wave đã hoàn thành!");
+        if (!allWavesCompleted)
+        {
+            allWavesCompleted = true;
+            OnAllWavesCompleted?.Invoke();
+        }
     }
 }

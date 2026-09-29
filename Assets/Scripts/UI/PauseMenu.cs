@@ -60,6 +60,9 @@ public class PauseMenu : MonoBehaviour
 
     private void Update()
     {
+        // Do not allow toggling pause after the game has ended (Win / Lose)
+        if (GameEndUI.IsGameEnded) return;
+
         // Detect ESC key press (works even when Time.timeScale = 0
         // because Update still runs; only Time.deltaTime becomes 0)
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -84,6 +87,8 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     public void OpenPause()
     {
+        if (GameEndUI.IsGameEnded) return;
+
         isPaused = true;
 
         if (pausePanel != null)
