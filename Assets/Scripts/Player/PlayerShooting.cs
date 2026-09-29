@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using System;
+using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class PlayerShooting : MonoBehaviour
 
     public bool IsChanneling => isChanneling;
     public int ShotLevel => shotLevel;
+
+    public event Action<int> OnShotLevelChanged;
 
     private void Awake()
     {
@@ -136,6 +139,7 @@ public class PlayerShooting : MonoBehaviour
 
         shotLevel++;
         Debug.Log("Bullet upgraded! Level: " + shotLevel + " (" + BulletCountByLevel[shotLevel - 1] + " tia)");
+        OnShotLevelChanged?.Invoke(shotLevel);
     }
 
     // Dùng khi Continue — set thẳng level đã lưu, không tăng dần từng bước như UpgradeShot().
@@ -143,6 +147,7 @@ public class PlayerShooting : MonoBehaviour
     {
         shotLevel = Mathf.Clamp(level, 1, MaxShotLevel);
         Debug.Log("Player shot level restored: " + shotLevel + "/" + MaxShotLevel + " (" + BulletCountByLevel[shotLevel - 1] + " tia)");
+        OnShotLevelChanged?.Invoke(shotLevel);
     }
 
     private void ShootMegaBeam()

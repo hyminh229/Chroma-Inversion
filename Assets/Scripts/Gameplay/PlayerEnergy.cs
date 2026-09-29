@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerEnergy : MonoBehaviour
@@ -16,6 +17,8 @@ public class PlayerEnergy : MonoBehaviour
     public bool IsBlueFull => currentBlueEnergy >= maxEnergy;
     public bool IsRedFull => currentRedEnergy >= maxEnergy;
     public bool IsFull => IsBlueFull && IsRedFull;
+
+    public event Action<int, int> OnEnergyChanged;
 
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class PlayerEnergy : MonoBehaviour
         }
 
         Debug.Log("Blue Energy: " + currentBlueEnergy + "/" + maxEnergy + " | Red Energy: " + currentRedEnergy + "/" + maxEnergy);
+        OnEnergyChanged?.Invoke(currentBlueEnergy, currentRedEnergy);
     }
 
     public bool UseMegaBeam()
@@ -48,6 +52,7 @@ public class PlayerEnergy : MonoBehaviour
         currentRedEnergy = 0;
 
         Debug.Log("Mega Beam used! Both energies reset to 0.");
+        OnEnergyChanged?.Invoke(currentBlueEnergy, currentRedEnergy);
 
         return true;
     }
@@ -56,5 +61,6 @@ public class PlayerEnergy : MonoBehaviour
         currentBlueEnergy = Mathf.Clamp(blue, 0, maxEnergy);
         currentRedEnergy = Mathf.Clamp(red, 0, maxEnergy);
         Debug.Log("Player energy restored. Blue: " + currentBlueEnergy + "/" + maxEnergy + " | Red: " + currentRedEnergy + "/" + maxEnergy);
+        OnEnergyChanged?.Invoke(currentBlueEnergy, currentRedEnergy);
     }
 }
