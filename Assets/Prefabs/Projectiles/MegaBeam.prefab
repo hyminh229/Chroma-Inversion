@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4998041338032116315}
   - component: {fileID: 3837739471153354484}
+  - component: {fileID: 5791235094813470741}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -81,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 8579505681924213661, guid: bf0b6407e01c566498fd8914a399c28b, type: 3}
   m_Color: {r: 0.7538911, g: 0, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -91,6 +92,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &5791235094813470741
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833175688108760326}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dd31ebbedd1c32648b8f7092029703b1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7421420548664835183
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,8 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791afacd0b6edeb48b6963dfa457dd0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MegaBeam
-  beamDuration: 1
-  damage: 10
+  beamDuration: 2
+  damage: 100
 --- !u!65 &5013422528574916411
 BoxCollider:
   m_ObjectHideFlags: 0
