@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 438841316424979524}
   - component: {fileID: 592352655145082851}
   m_Layer: 0
-  m_Name: player_blue_bullet
+  m_Name: player_bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -268,8 +268,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 2474219348883497667, guid: cb4ed9cfbc3f8d34186a44f64644e51d, type: 3}
-  m_Color: {r: 0, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 1326915588086032170, guid: cb4ed9cfbc3f8d34186a44f64644e51d, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

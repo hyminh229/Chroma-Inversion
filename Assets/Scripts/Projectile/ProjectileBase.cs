@@ -9,6 +9,11 @@ public abstract class ProjectileBase : MonoBehaviour, IDestroyable
     [SerializeField] protected Sprite blueSprite;
     [SerializeField] protected Sprite redSprite;
 
+    [Header("Animation (Optional)")]
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected string blueAnimationState = "player_blue_bullet";
+    [SerializeField] protected string redAnimationState = "player_bullet";
+
     public ElementColor ColorType { get; private set; }
     public int Damage => damage;
 
@@ -16,8 +21,17 @@ public abstract class ProjectileBase : MonoBehaviour, IDestroyable
     {
         if (spriteRenderer == null)
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+    }
+
+    protected virtual void OnEnable()
+    {
+        ApplyAnimation(ColorType);
     }
 
     protected virtual void Update()
@@ -34,6 +48,7 @@ public abstract class ProjectileBase : MonoBehaviour, IDestroyable
     {
         ColorType = newColor;
         ApplySprite(ColorType == ElementColor.BLUE ? blueSprite : redSprite);
+        ApplyAnimation(ColorType);
     }
 
     public void SetDamage(int newDamage)
@@ -54,7 +69,11 @@ public abstract class ProjectileBase : MonoBehaviour, IDestroyable
 
         if (target == null)
         {
-            Debug.LogWarning(gameObject.name + ": chưa gán " + (ColorType == ElementColor.BLUE ? "Blue" : "Red") + " Sprite trên ProjectileBase.");
+            // Nếu có Animator thì sprite do animation quản lý, không cần cảnh báo thiếu sprite tĩnh
+            if (animator == null)
+            {
+                Debug.LogWarning(gameObject.name + ": chưa gán " + (ColorType == ElementColor.BLUE ? "Blue" : "Red") + " Sprite trên ProjectileBase.");
+            }
             return;
         }
 
@@ -66,6 +85,40 @@ public abstract class ProjectileBase : MonoBehaviour, IDestroyable
         }
 
         spriteRenderer.sprite = target;
+    }
+
+    private void ApplyAnimation(ElementColor color)
+    {
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+
+        if (animator == null || !animator.isActiveAndEnabled) return;
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
+        if (spriteRenderer != null)
+        {
+            // Tránh việc SpriteRenderer bị lưu tint đỏ khiến animation đạn xanh bị tối/đen
+            spriteRenderer.color = Color.white;
+        }
+
+        string primary = (color == ElementColor.BLUE) ? blueAnimationState : redAnimationState;
+        string[] candidates = (color == ElementColor.BLUE)
+            ? new[] { primary, "player_blue_bullet", "player_blue", "Blue" }
+            : new[] { primary, "player_bullet", "player_red_bullet", "player_red", "Red" };
+
+        foreach (string candidate in candidates)
+        {
+            if (!string.IsNullOrEmpty(candidate) && animator.HasState(0, Animator.StringToHash(candidate)))
+            {
+                animator.Play(candidate, 0, 0f);
+                return;
+            }
+        }
     }
 
     public virtual void DestroyObject()

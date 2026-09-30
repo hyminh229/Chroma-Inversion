@@ -37,7 +37,11 @@ public class PlayerShooting : MonoBehaviour
 
     private void Awake()
     {
-        colorController = GetComponent<PlayerColorController>();
+        colorController = GetComponentInChildren<PlayerColorController>();
+        if (colorController == null)
+        {
+            colorController = FindAnyObjectByType<PlayerColorController>();
+        }
         playerEnergy = GetComponent<PlayerEnergy>();
     }
 
@@ -123,9 +127,22 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
 
+        if (colorController == null)
+        {
+            colorController = GetComponentInChildren<PlayerColorController>();
+            if (colorController == null)
+            {
+                colorController = FindAnyObjectByType<PlayerColorController>();
+            }
+        }
+
         if (colorController != null)
         {
             bullet.SetColor(colorController.CurrentColor);
+        }
+        else
+        {
+            Debug.LogWarning("[PlayerShooting] colorController is missing! Bullet color not set.");
         }
     }
 
