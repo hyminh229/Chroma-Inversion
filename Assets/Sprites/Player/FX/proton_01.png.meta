@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c2b5cfbf7165e004db49a354fba0e485
+guid: 1778ef29d651958448e69695c4d5285b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1952306014837444860
-    second: fa12_0
+      213: -2908384742826982882
+    second: proton_01_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fa12_0
+      name: proton_01_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 15
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 40f61c4f50408e4e0800000000000000
-      internalID: -1952306014837444860
+      spriteID: e12c1a55c7753a7d0800000000000000
+      internalID: -2908384742826982882
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      fa12_0: -1952306014837444860
+      proton_01_0: -2908384742826982882
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
