@@ -6092,7 +6092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveSequencer
   waveSpawners:
-  - {fileID: 1088799724}
+  - {fileID: 1922860954}
   - {fileID: 11754572}
   - {fileID: 1088799724}
   - {fileID: 1077136039}
