@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MegaBeam
   beamDuration: 2
-  damage: 100
+  damage: 30
 --- !u!61 &-6108739940474528346
 BoxCollider2D:
   m_ObjectHideFlags: 0
