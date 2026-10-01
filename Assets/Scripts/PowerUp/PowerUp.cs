@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public abstract class PowerUp : MonoBehaviour
 {
-    [SerializeField] private float fallSpeed = 2f;
+    [SerializeField] private float fallSpeed = 1f;
 
     private void Update()
     {

@@ -24,21 +24,33 @@ PrefabInstance:
       propertyPath: m_DrawMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2493738735025872560, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
+      propertyPath: m_Radius
+      value: 1.7278862
+      objectReference: {fileID: 0}
+    - target: {fileID: 2493738735025872560, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.09360552
+      objectReference: {fileID: 0}
+    - target: {fileID: 2493738735025872560, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.13214874
+      objectReference: {fileID: 0}
     - target: {fileID: 3582231415078449450, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: meteorSize
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3586086709681620591, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3586086709681620591, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: m_LocalScale.y
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3586086709681620591, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: m_LocalScale.z
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5574349256128517269, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
       propertyPath: m_Name

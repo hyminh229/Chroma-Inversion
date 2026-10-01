@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5208522423688827685, guid: f752c85b97bb57747a3aa65aa8f12927, type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1644906097388956189, guid: f752c85b97bb57747a3aa65aa8f12927, type: 3}
       propertyPath: m_LocalScale.x
       value: 3
@@ -58,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3739410482566353081, guid: f752c85b97bb57747a3aa65aa8f12927, type: 3}
       propertyPath: m_Name
-      value: EnemyBullet_Boss
+      value: EnemyRedBullet
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

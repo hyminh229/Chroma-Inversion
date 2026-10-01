@@ -187,8 +187,11 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = firePoint.position + firePoint.up * megaBeamSpawnOffset;
-        GameObject beamObject = Instantiate(megaBeamPrefab, spawnPos, firePoint.rotation);
+        // Làm con của firePoint thay vì spawn đứng yên tại 1 toạ độ cố định — để tia
+        // tự động bám theo Player mỗi frame, cho phép Player di chuyển trong lúc kênh.
+        GameObject beamObject = Instantiate(megaBeamPrefab, firePoint);
+        beamObject.transform.localPosition = Vector3.up * megaBeamSpawnOffset;
+        beamObject.transform.localRotation = Quaternion.identity;
 
         if (beamObject.TryGetComponent(out MegaBeam beam))
         {

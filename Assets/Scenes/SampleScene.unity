@@ -3417,8 +3417,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEnergy
   maxEnergy: 100
-  currentBlueEnergy: 0
-  currentRedEnergy: 0
+  currentBlueEnergy: 100
+  currentRedEnergy: 100
 --- !u!114 &811968765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6092,7 +6092,7 @@ MonoBehaviour:
   waveSpawners:
   - {fileID: 1077136039}
   bannerUI: {fileID: 2041825244}
-  bannerDuration: 1.5
+  bannerDuration: 2
   delayBetweenWaves: 1
   delayBeforeEnemySpawn: 0.5
   playerLife: {fileID: 0}

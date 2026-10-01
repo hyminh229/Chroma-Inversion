@@ -74,11 +74,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08028b59c05aeb42b605720281a2577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBullet
-  speed: 6
+  speed: 3
   damage: 1
   spriteRenderer: {fileID: 0}
   blueSprite: {fileID: -8624817734003605091, guid: 32622e4d5bfea4c42ab9586e0d07cb47, type: 3}
   redSprite: {fileID: -6595887025787281870, guid: 44dc4a10bc13bca4bb365755d78b8eb6, type: 3}
+  animator: {fileID: 0}
+  blueAnimationState: player_blue_bullet
+  redAnimationState: player_bullet
   absorbEnergy: 10
   perfectAbsorbEnergy: 15
   perfectParryWindow: 0.3

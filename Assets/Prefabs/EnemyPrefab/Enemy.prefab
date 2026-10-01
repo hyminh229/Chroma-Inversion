@@ -294,7 +294,6 @@ MonoBehaviour:
   powerUpPrefabs:
   - {fileID: 6395092276804953319, guid: 1e32a4c08c8d0794db0f85b9c05a26ef, type: 3}
   - {fileID: 4279235323947348034, guid: 5d3c076aca7dc4a4e8727b30ddca0395, type: 3}
-  - {fileID: 7147667013161190294, guid: 894c8ab534e73134394f4d35d745b05f, type: 3}
 --- !u!1 &3827344424471875404
 GameObject:
   m_ObjectHideFlags: 0

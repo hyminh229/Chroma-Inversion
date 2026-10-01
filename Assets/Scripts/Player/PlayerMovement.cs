@@ -31,8 +31,10 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         if (!playerLife.IsAlive) return;
-        if (playerShooting != null && playerShooting.IsChanneling) return;
 
+        // Trước đây block di chuyển khi IsChanneling — bỏ để Player có thể di chuyển
+        // trong lúc Mega Beam đang bắn (vẫn không bắn súng thường/bắn lại Mega Beam được,
+        // 2 cái đó vẫn bị khoá riêng trong PlayerShooting).
         MoveWithMouse();
     }
 
