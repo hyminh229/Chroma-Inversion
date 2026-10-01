@@ -186,6 +186,7 @@ public class BossController : MonoBehaviour
 
         ElementColor randomColor = Random.value < 0.5f ? ElementColor.BLUE : ElementColor.RED;
         enemyBullet.SetColor(randomColor);
+        AudioManager.Instance?.PlayBossShoot();
     }
 
     private void CheckEnrage()

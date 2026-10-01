@@ -62,6 +62,8 @@ public class BossFanShotAttack : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0f, 0f, bulletAngle - 90f);
             SpawnBullet(origin, rotation);
         }
+
+        AudioManager.Instance?.PlayBossShoot();
     }
 
     private void SpawnBullet(Vector2 position, Quaternion rotation)

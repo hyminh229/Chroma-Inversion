@@ -46,6 +46,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip enemyShootSFX;
     [SerializeField] private AudioClip enemyHitSFX;
     [SerializeField] private AudioClip enemyDeadSFX;
+    [SerializeField] private AudioClip bossShootSFX;
     [SerializeField] private AudioClip bossExplosionSFX;
 
     [Header("SFX Clips - Meteor & Pickups")]
@@ -295,6 +296,7 @@ public class AudioManager : MonoBehaviour
     public void PlayEnemyShoot() => PlaySFX(enemyShootSFX, 0.7f, true);
     public void PlayEnemyHit() => PlaySFX(enemyHitSFX, 0.7f, true);
     public void PlayEnemyDead() => PlaySFX(enemyDeadSFX, 0.9f, true);
+    public void PlayBossShoot() => PlaySFX(bossShootSFX, 0.85f, true);
     public void PlayBossExplosion() => PlaySFX(bossExplosionSFX, 1.0f);
 
     // --- Quick Helpers: Meteor & Pickups ---
@@ -332,6 +334,7 @@ public class AudioManager : MonoBehaviour
         enemyShootSFX = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Enemy/enemy_shoot.wav");
         enemyHitSFX = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Enemy/enemy_hit.wav");
         enemyDeadSFX = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Enemy/enemy_dead.wav");
+        bossShootSFX = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Boss/boss_shoot.wav");
         bossExplosionSFX = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Boss/boss_explosion.wav");
 
         meteorExplosionSFX = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/SFX/Mateor/explosion.wav");
