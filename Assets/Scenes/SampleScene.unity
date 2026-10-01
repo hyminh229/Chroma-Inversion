@@ -4763,7 +4763,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeteorShowerWaveSpawner
   meteorPrefabs:
   - {fileID: 5574349256128517269, guid: 8b659673ca236aa4fb39c0e6adc86f80, type: 3}
-  - {fileID: 901731188610705044, guid: ae5b6deb1c69d214e918fca7b7df8014, type: 3}
   meteorCount: 20
   showerDuration: 5
   direction: {x: 0.6, y: -1}
@@ -5663,9 +5662,9 @@ MonoBehaviour:
   - {fileID: 4813252968951830102, guid: 93a04003bfa7ef947bac29be61220c4d, type: 3}
   meteorCount: 20
   showerDuration: 5
-  direction: {x: 0.6, y: -1}
+  direction: {x: 0, y: 0}
   moveSpeed: 2.5
-  speedVariance: 0.25
+  speedVariance: 0.5
   spawnSpreadRatio: 1
   topSpawnMargin: 1.5
 --- !u!4 &1316158777
@@ -6090,7 +6089,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveSequencer
   waveSpawners:
+  - {fileID: 1922860954}
+  - {fileID: 11754572}
+  - {fileID: 1088799724}
   - {fileID: 1077136039}
+  - {fileID: 1316158776}
+  - {fileID: 100033011}
   bannerUI: {fileID: 2041825244}
   bannerDuration: 2
   delayBetweenWaves: 1
