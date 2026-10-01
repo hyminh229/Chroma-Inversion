@@ -113,6 +113,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeteorHealth
   maxHealth: 3
+  explosionPrefab: {fileID: 5676561563055019408, guid: 7e02541ef740a584584044280b6379c5, type: 3}
+  explosionScale: 1
 --- !u!212 &7217073541266136270
 SpriteRenderer:
   serializedVersion: 2

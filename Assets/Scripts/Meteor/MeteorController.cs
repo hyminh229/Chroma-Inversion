@@ -11,6 +11,8 @@ public class MeteorController : MonoBehaviour, IDestroyable
     [SerializeField] private MeteorSize meteorSize = MeteorSize.SMALL;
     [SerializeField] private float explosionRadius = 2f;
 
+    public MeteorSize Size => meteorSize;
+
     private MeteorHealth meteorHealth;
 
     private void Awake()

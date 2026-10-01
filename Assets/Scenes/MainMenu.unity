@@ -2845,6 +2845,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuUI
   playButton: {fileID: 2124567244}
   continueButton: {fileID: 1235773739}
+  disabledContinueAlpha: 0.201
   tutorialButton: {fileID: 0}
   optionsButton: {fileID: 691470412}
   creditsButton: {fileID: 215646193}
