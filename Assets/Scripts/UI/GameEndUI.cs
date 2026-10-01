@@ -216,7 +216,11 @@ public class GameEndUI : MonoBehaviour
         IsGameEnded = true;
 
         if (losePanel != null) losePanel.SetActive(false);
-        if (winPanel != null) winPanel.SetActive(true);
+        if (winPanel != null)
+        {
+            winPanel.transform.SetAsLastSibling();
+            winPanel.SetActive(true);
+        }
 
         if (playerLife == null || playerShooting == null)
         {
@@ -252,7 +256,11 @@ public class GameEndUI : MonoBehaviour
         IsGameEnded = true;
 
         if (winPanel != null) winPanel.SetActive(false);
-        if (losePanel != null) losePanel.SetActive(true);
+        if (losePanel != null)
+        {
+            losePanel.transform.SetAsLastSibling();
+            losePanel.SetActive(true);
+        }
 
         if (playerLife == null || playerShooting == null || waveSequencer == null)
         {

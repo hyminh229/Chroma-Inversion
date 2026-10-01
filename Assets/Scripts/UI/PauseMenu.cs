@@ -122,7 +122,10 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
 
         if (pausePanel != null)
+        {
+            pausePanel.transform.SetAsLastSibling();
             pausePanel.SetActive(true);
+        }
 
         Time.timeScale = 0f;
 
@@ -178,6 +181,7 @@ public class PauseMenu : MonoBehaviour
         if (settingsUI != null)
             settingsUI.SetOnCloseCallback(OnSettingsClosed);
 
+        settingsPanel.transform.SetAsLastSibling();
         settingsPanel.SetActive(true);
 
         // Time.timeScale remains 0 — game stays paused
@@ -196,7 +200,10 @@ public class PauseMenu : MonoBehaviour
 
         // Re-show the Pause Panel
         if (pausePanel != null)
+        {
+            pausePanel.transform.SetAsLastSibling();
             pausePanel.SetActive(true);
+        }
 
         // Time.timeScale remains 0 — game stays paused
     }
