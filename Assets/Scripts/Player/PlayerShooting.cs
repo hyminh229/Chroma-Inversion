@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
@@ -91,6 +91,8 @@ public class PlayerShooting : MonoBehaviour
             float angleOffset = startAngle + i * multiShotSpreadAngle;
             SpawnBullet(angleOffset);
         }
+
+        AudioManager.Instance?.PlayPlayerShoot();
     }
 
     // Nhân dồn multiplier cho MỖI mốc tăng tốc đã đạt tới tính từ Level 1 —
@@ -155,6 +157,7 @@ public class PlayerShooting : MonoBehaviour
         }
 
         shotLevel++;
+        AudioManager.Instance?.PlayBulletUpgrade();
         Debug.Log("Bullet upgraded! Level: " + shotLevel + " (" + BulletCountByLevel[shotLevel - 1] + " tia)");
         OnShotLevelChanged?.Invoke(shotLevel);
     }
@@ -199,6 +202,7 @@ public class PlayerShooting : MonoBehaviour
         }
 
         isChanneling = true;
+        AudioManager.Instance?.PlayMegaBeam();
         Debug.Log("MEGA BEAM FIRED!");
     }
 

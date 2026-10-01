@@ -21,6 +21,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (damage <= 0) return;
 
         currentHealth -= damage;
+        AudioManager.Instance?.PlayEnemyHit();
         Debug.Log(gameObject.name + " took " + damage + " damage. HP: " + currentHealth + "/" + maxHealth);
 
         if (currentHealth <= 0)
@@ -43,6 +44,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         IsAlive = false;
         currentHealth = 0;
 
+        AudioManager.Instance?.PlayEnemyDead();
         Debug.Log(gameObject.name + " destroyed.");
 
         OnDeath?.Invoke();

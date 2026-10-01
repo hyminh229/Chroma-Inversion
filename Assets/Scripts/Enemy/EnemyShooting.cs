@@ -72,6 +72,7 @@ public class EnemyShooting : MonoBehaviour
         }
 
         enemyBullet.SetColor(bulletColor);
+        AudioManager.Instance?.PlayEnemyShoot();
     }
 
     private void AimAtPlayer()

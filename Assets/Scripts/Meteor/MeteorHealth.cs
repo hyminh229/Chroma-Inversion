@@ -42,6 +42,7 @@ public class MeteorHealth : MonoBehaviour, IDamageable
         IsAlive = false;
         currentHealth = 0;
 
+        AudioManager.Instance?.PlayMeteorExplosion();
         Debug.Log(gameObject.name + " destroyed.");
 
         OnDeath?.Invoke();

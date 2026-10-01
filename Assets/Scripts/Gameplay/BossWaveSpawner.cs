@@ -11,6 +11,7 @@ public class BossWaveSpawner : MonoBehaviour, IWaveSpawner
 
     public void StartWave()
     {
+        AudioManager.Instance?.PlayBossBGM();
         StartCoroutine(SpawnBoss());
     }
 
@@ -36,6 +37,7 @@ public class BossWaveSpawner : MonoBehaviour, IWaveSpawner
     private void HandleBossDeath()
     {
         Debug.Log("BOSS DEFEATED — Wave cleared!");
+        AudioManager.Instance?.PlayGameplayBGM();
         OnWaveCleared?.Invoke();
     }
 }

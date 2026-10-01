@@ -34,6 +34,7 @@ public class PlayerLife : MonoBehaviour
         if (CurrentLives > 1)
         {
             CurrentLives--;
+            AudioManager.Instance?.PlayPlayerDead();
             Debug.Log("Player mất 1 mạng. Còn lại: " + CurrentLives);
             OnLifeChanged?.Invoke(CurrentLives);
             OnLifeLost?.Invoke();
@@ -47,6 +48,7 @@ public class PlayerLife : MonoBehaviour
         else
         {
             CurrentLives = 0;
+            AudioManager.Instance?.PlayPlayerDead();
             Debug.Log("Player mất mạng cuối cùng. Còn lại: 0");
             OnLifeChanged?.Invoke(CurrentLives);
             OnLifeLost?.Invoke();
@@ -59,6 +61,7 @@ public class PlayerLife : MonoBehaviour
         if (amount <= 0) return;
 
         CurrentLives += amount;
+        AudioManager.Instance?.PlayLifePickup();
         Debug.Log("Nhặt Life! Còn lại: " + CurrentLives);
         OnLifeChanged?.Invoke(CurrentLives);
     }

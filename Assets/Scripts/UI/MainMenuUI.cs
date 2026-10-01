@@ -55,6 +55,13 @@ public class MainMenuUI : MonoBehaviour
         // 4. Thoát game
         if (quitButton != null)
             quitButton.onClick.AddListener(QuitGame);
+
+        // Gắn âm thanh click cho tất cả các nút trong menu
+        Button[] allButtons = GetComponentsInChildren<Button>(true);
+        foreach (Button btn in allButtons)
+        {
+            btn.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
+        }
     }
 
     private void Start()

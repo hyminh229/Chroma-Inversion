@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class EnergyOrb : MonoBehaviour
@@ -64,6 +64,7 @@ public class EnergyOrb : MonoBehaviour
 
         playerEnergy.AddEnergy(color, energyAmount);
         ScoreManager.Instance?.AddScore(scoreValue);
+        AudioManager.Instance?.PlayEnergyCollect();
 
         Debug.Log("EXP Orb collected! +" + energyAmount + " " + color + " Energy, +" + scoreValue + " Score.");
 

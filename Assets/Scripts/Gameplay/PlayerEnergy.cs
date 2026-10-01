@@ -29,6 +29,8 @@ public class PlayerEnergy : MonoBehaviour
     {
         if (amount <= 0) return;
 
+        bool wasFull = IsFull;
+
         if (color == ElementColor.BLUE)
         {
             currentBlueEnergy += amount;
@@ -42,6 +44,11 @@ public class PlayerEnergy : MonoBehaviour
 
         Debug.Log("Blue Energy: " + currentBlueEnergy + "/" + maxEnergy + " | Red Energy: " + currentRedEnergy + "/" + maxEnergy);
         OnEnergyChanged?.Invoke(currentBlueEnergy, currentRedEnergy);
+
+        if (!wasFull && IsFull)
+        {
+            AudioManager.Instance?.PlayMegaBeamReady();
+        }
     }
 
     public bool UseMegaBeam()

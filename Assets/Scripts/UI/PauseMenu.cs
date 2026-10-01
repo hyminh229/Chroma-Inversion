@@ -41,6 +41,12 @@ public class PauseMenu : MonoBehaviour
 
         if (mainMenuButton != null)
             mainMenuButton.onClick.AddListener(GoToMainMenu);
+
+        Button[] buttons = GetComponentsInChildren<Button>(true);
+        foreach (Button btn in buttons)
+        {
+            btn.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
+        }
     }
 
     private void Start()

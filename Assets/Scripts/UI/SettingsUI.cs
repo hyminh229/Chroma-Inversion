@@ -31,7 +31,15 @@ public class SettingsUI : MonoBehaviour
     {
         // Wire up Back button
         if (backButton != null)
+        {
+            backButton.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
             backButton.onClick.AddListener(OnBackPressed);
+        }
+
+        if (fullscreenToggle != null)
+        {
+            fullscreenToggle.onValueChanged.AddListener((_) => AudioManager.Instance?.PlayUIClick());
+        }
     }
 
     private void OnEnable()

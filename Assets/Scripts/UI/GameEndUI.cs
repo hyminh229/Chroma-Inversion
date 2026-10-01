@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
@@ -52,6 +53,12 @@ public class GameEndUI : MonoBehaviour
         if (losePanel != null) losePanel.SetActive(false);
 
         FindReferences();
+
+        Button[] buttons = GetComponentsInChildren<Button>(true);
+        foreach (Button btn in buttons)
+        {
+            btn.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
+        }
     }
 
     private void OnEnable()
@@ -219,6 +226,8 @@ public class GameEndUI : MonoBehaviour
 
         Time.timeScale = 0f;
 
+        AudioManager.Instance?.PlayGameWin();
+
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -252,6 +261,8 @@ public class GameEndUI : MonoBehaviour
         Debug.Log($"[GameEndUI] ShowLose - Score: {score}, Wave: {wave}, BulletLevel: {bulletLevel}");
 
         Time.timeScale = 0f;
+
+        AudioManager.Instance?.PlayGameOver();
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;

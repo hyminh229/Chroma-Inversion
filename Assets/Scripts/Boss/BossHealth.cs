@@ -25,6 +25,7 @@ public class BossHealth : MonoBehaviour, IDamageable
         if (damage <= 0) return;
 
         currentHealth -= damage;
+        AudioManager.Instance?.PlayEnemyHit();
         Debug.Log("Boss took " + damage + " damage. HP: " + currentHealth + "/" + maxHealth);
 
         OnDamaged?.Invoke();
@@ -40,6 +41,7 @@ public class BossHealth : MonoBehaviour, IDamageable
         IsAlive = false;
         currentHealth = 0;
 
+        AudioManager.Instance?.PlayBossExplosion();
         Debug.Log("Boss destroyed!");
         OnDeath?.Invoke();
         Destroy(gameObject);
