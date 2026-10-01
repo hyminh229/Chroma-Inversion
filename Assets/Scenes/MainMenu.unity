@@ -3041,6 +3041,66 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: gameWinSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 3582c0d266b26b34986c4c0e3fce34f6, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: uiClickSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 87bb1c81265218740b2b59d04c38b161, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: enemyHitSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 382284dfaff489e48826c43051811787, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: gameOverSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: f1cb1e280d7d35142b49e2dd10644faa, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: megaBeamSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 92de89ac66bee544faf2a982caa647c1, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: enemyDeadSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: e5b6cae20c4fb9542985d3e1d6de3181, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: enemyShootSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: ae63607f051989c469da69a5995c2b86, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: lifePickupSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 365a0619ffbd1934898c5b3022de3259, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: playerDeadSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: afc1208c98c2f3940b8f89a85e97b823, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: playerShootSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: ae4edf00982aabf46b997e50bb36e62e, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: bossExplosionSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: b6e8bc7b69cb22b4792c46394c877008, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: bulletUpgradeSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 28c0fbaea63a61b418e455e6e7d787d4, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: energyCollectSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: afd194b04f9680442a257b2603f2fa6e, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: megaBeamReadySFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 0d2aa19b291139d449ad919f98b22443, type: 3}
+    - target: {fileID: 2820727282409433896, guid: 22a8f0cc706d1224a95a4082626ab2ee, type: 3}
+      propertyPath: meteorExplosionSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 88b8f5aa4fd1ab849a384bd67a2679ce, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
