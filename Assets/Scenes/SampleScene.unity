@@ -6295,6 +6295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1576814011}
   - component: {fileID: 1576814012}
+  - component: {fileID: 1576814013}
   m_Layer: 0
   m_Name: Background_0
   m_TagString: Untagged
@@ -6376,6 +6377,22 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1576814013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576814010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07381a8aae742cfb038ed0fade475ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BackgroundScroller
+  scrollSpeed: 2
+  scrollDirection: {x: 0, y: -1}
+  autoCalculateTileSize: 1
+  customTileSize: {x: 15.36, y: 10.24}
 --- !u!1 &1583478677
 GameObject:
   m_ObjectHideFlags: 0
