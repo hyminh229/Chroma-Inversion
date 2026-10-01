@@ -70,6 +70,7 @@ public class BossBeamAttack : MonoBehaviour
         // Active — tia thật, collider BẬT. BeamHazard trên cùng object tự lo tick damage.
         beamRenderer.color = activeColor;
         beamCollider.enabled = true;
+        AudioManager.Instance?.PlayBossShoot();
 
         yield return new WaitForSeconds(activeDuration);
 

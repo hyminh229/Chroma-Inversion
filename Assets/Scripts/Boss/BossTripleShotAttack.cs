@@ -67,6 +67,8 @@ public class BossTripleShotAttack : MonoBehaviour
             Vector2 spawnPos = origin + perpendicular * offset;
             SpawnBullet(spawnPos, rotation);
         }
+
+        AudioManager.Instance?.PlayBossShoot();
     }
 
     private void SpawnBullet(Vector2 position, Quaternion rotation)
