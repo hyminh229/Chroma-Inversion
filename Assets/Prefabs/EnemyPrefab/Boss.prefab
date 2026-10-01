@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 644e9ac9ee18e1c4f9638f391da5ae9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossHealth
-  maxHealth: 100
+  maxHealth: 300
 --- !u!114 &5269026402450152274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +74,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3130722402176245513, guid: 0355f8195e525924aacac43b11272a04, type: 3}
   fireInterval: 0.8
   fireChance: 0.5
+  aimRotationOffset: -90
   enrageHpThreshold: 0.35
   enrageSpinMultiplier: 1.6
   enrageFireIntervalMultiplier: 0.5
@@ -140,7 +141,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3130722402176245513, guid: 0355f8195e525924aacac43b11272a04, type: 3}
   bulletCount: 7
   spreadAngle: 60
-  bulletSpeed: 6
+  bulletSpeed: 3
   bulletColor: 1
   cooldown: 10
 --- !u!114 &8181149172640459754
@@ -158,7 +159,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3130722402176245513, guid: 0355f8195e525924aacac43b11272a04, type: 3}
   bulletCount: 3
   bulletSpacing: 1
-  bulletSpeed: 6
+  bulletSpeed: 3
   bulletColor: 0
   cooldown: 15
 --- !u!1 &5470439179262802352
