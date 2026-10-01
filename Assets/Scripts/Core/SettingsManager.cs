@@ -153,10 +153,11 @@ public static class SettingsManager
         // Master volume controls the global AudioListener
         AudioListener.volume = masterVolume;
 
-        // Music and SFX volumes are stored in the runtime cache.
-        // When AudioSources are added to the project, they can query
-        // SettingsManager.GetMusicVolume() / GetSFXVolume() to set their volume.
-        // No AudioSources exist yet, so no additional application is needed.
+        // Đồng bộ âm lượng sang AudioManager (nếu có instance)
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.UpdateVolumes();
+        }
 
         // Fullscreen
         Screen.fullScreen = fullscreen;
