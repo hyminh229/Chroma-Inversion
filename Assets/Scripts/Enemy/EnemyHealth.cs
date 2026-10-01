@@ -4,6 +4,9 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private int maxHealth = 5;
+    [Header("Death VFX")]
+    [SerializeField] private GameObject explosionPrefab;
+
     private int currentHealth;
     public bool IsAlive { get; private set; }
 
@@ -43,6 +46,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         IsAlive = false;
         currentHealth = 0;
+
+        if (explosionPrefab != null)
+        {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        }
 
         AudioManager.Instance?.PlayEnemyDead();
         Debug.Log(gameObject.name + " destroyed.");

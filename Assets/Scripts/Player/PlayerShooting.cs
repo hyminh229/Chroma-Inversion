@@ -196,6 +196,17 @@ public class PlayerShooting : MonoBehaviour
         beamObject.transform.localPosition = Vector3.up * megaBeamSpawnOffset;
         beamObject.transform.localRotation = Quaternion.identity;
 
+        // Đảm bảo tia MegaBeam luôn vẽ phía sau nhân vật để không frame nào đè lên tàu
+        SpriteRenderer playerSr = GetComponent<SpriteRenderer>() ?? GetComponentInChildren<SpriteRenderer>();
+        if (playerSr != null)
+        {
+            foreach (var sr in beamObject.GetComponentsInChildren<SpriteRenderer>(true))
+            {
+                sr.sortingLayerID = playerSr.sortingLayerID;
+                sr.sortingOrder = playerSr.sortingOrder - 1;
+            }
+        }
+
         if (beamObject.TryGetComponent(out MegaBeam beam))
         {
             beam.Init(this);

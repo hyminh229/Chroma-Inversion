@@ -8,6 +8,9 @@ public class MainMenuUI : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button playButton;      // Nút New Game
     [SerializeField] private Button continueButton;  // Nút Continue
+    [Tooltip("Độ mờ của nút Continue khi chưa có save / chưa bấm được (mờ cả khung và chữ)")]
+    [Range(0f, 1f)]
+    [SerializeField] private float disabledContinueAlpha = 0.35f;
     [SerializeField] private Button tutorialButton;
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button creditsButton;
@@ -56,11 +59,15 @@ public class MainMenuUI : MonoBehaviour
         if (quitButton != null)
             quitButton.onClick.AddListener(QuitGame);
 
-        // Gắn âm thanh click cho tất cả các nút trong menu
+        // Gắn âm thanh click và hiệu ứng xúc giác (co lún / nảy) cho tất cả các nút trong menu
         Button[] allButtons = GetComponentsInChildren<Button>(true);
         foreach (Button btn in allButtons)
         {
             btn.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
+            if (!btn.TryGetComponent<UIButtonFeedback>(out _))
+            {
+                btn.gameObject.AddComponent<UIButtonFeedback>();
+            }
         }
     }
 
@@ -76,6 +83,7 @@ public class MainMenuUI : MonoBehaviour
 
     /// <summary>
     /// Cập nhật trạng thái tương tác của nút Continue dựa trên sự tồn tại của file save.
+    /// Làm mờ đồng bộ cả khung (Image) và chữ (TMP_Text) khi chưa có file save.
     /// </summary>
     private void UpdateContinueButtonState()
     {
@@ -85,12 +93,31 @@ public class MainMenuUI : MonoBehaviour
         {
             continueButton.interactable = hasSave;
 
+            // Sử dụng CanvasGroup để làm mờ đồng bộ toàn bộ nút (khung viền Image, chữ TMP_Text, bóng shadow)
+            CanvasGroup canvasGroup = continueButton.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = continueButton.gameObject.AddComponent<CanvasGroup>();
+            }
+
+            canvasGroup.alpha = hasSave ? 1f : disabledContinueAlpha;
+
+            // Reset alpha của TMP_Text về 1 để CanvasGroup quản lý đồng đều, tránh bị nhân đôi độ mờ
             TMP_Text tmpText = continueButton.GetComponentInChildren<TMP_Text>();
             if (tmpText != null)
             {
                 Color color = tmpText.color;
-                color.a = hasSave ? 1f : 0.4f;
+                color.a = 1f;
                 tmpText.color = color;
+            }
+
+            // Đảm bảo alpha của Image cũng là 1 để CanvasGroup quản lý
+            Image frameImage = continueButton.GetComponent<Image>();
+            if (frameImage != null)
+            {
+                Color color = frameImage.color;
+                color.a = 1f;
+                frameImage.color = color;
             }
         }
     }

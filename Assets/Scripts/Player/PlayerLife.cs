@@ -13,6 +13,10 @@ public class PlayerLife : MonoBehaviour
     [Range(0f, 0.8f)]
     [SerializeField] private float flashAlpha = 0.2f;
 
+    [Header("Death VFX")]
+    [Tooltip("Prefab hiệu ứng vụ nổ khi Player mất mạng / chết")]
+    [SerializeField] private GameObject explosionPrefab;
+
     public int CurrentLives { get; private set; }
     public bool IsAlive { get; private set; }
     public bool IsInvulnerable { get; private set; }
@@ -46,6 +50,11 @@ public class PlayerLife : MonoBehaviour
     {
         if (!IsAlive) return;
         if (IsInvulnerable) return;
+
+        if (explosionPrefab != null)
+        {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        }
 
         if (CurrentLives > 1)
         {

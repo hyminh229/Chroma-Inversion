@@ -34,6 +34,10 @@ public class SettingsUI : MonoBehaviour
         {
             backButton.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
             backButton.onClick.AddListener(OnBackPressed);
+            if (!backButton.TryGetComponent<UIButtonFeedback>(out _))
+            {
+                backButton.gameObject.AddComponent<UIButtonFeedback>();
+            }
         }
 
         if (fullscreenToggle != null)

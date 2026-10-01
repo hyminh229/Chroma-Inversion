@@ -42,10 +42,34 @@ public class PauseMenu : MonoBehaviour
         if (mainMenuButton != null)
             mainMenuButton.onClick.AddListener(GoToMainMenu);
 
-        Button[] buttons = GetComponentsInChildren<Button>(true);
-        foreach (Button btn in buttons)
+        RegisterButtonFeedback(resumeButton);
+        RegisterButtonFeedback(settingsButton);
+        RegisterButtonFeedback(mainMenuButton);
+
+        if (pausePanel != null)
         {
-            btn.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
+            foreach (Button btn in pausePanel.GetComponentsInChildren<Button>(true))
+            {
+                RegisterButtonFeedback(btn);
+            }
+        }
+
+        if (settingsPanel != null)
+        {
+            foreach (Button btn in settingsPanel.GetComponentsInChildren<Button>(true))
+            {
+                RegisterButtonFeedback(btn);
+            }
+        }
+    }
+
+    private void RegisterButtonFeedback(Button btn)
+    {
+        if (btn == null) return;
+        btn.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
+        if (!btn.TryGetComponent<UIButtonFeedback>(out _))
+        {
+            btn.gameObject.AddComponent<UIButtonFeedback>();
         }
     }
 

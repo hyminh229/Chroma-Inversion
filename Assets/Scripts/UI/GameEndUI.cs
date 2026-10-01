@@ -54,10 +54,20 @@ public class GameEndUI : MonoBehaviour
 
         FindReferences();
 
-        Button[] buttons = GetComponentsInChildren<Button>(true);
-        foreach (Button btn in buttons)
+        RegisterPanelButtons(winPanel);
+        RegisterPanelButtons(losePanel);
+    }
+
+    private void RegisterPanelButtons(GameObject panel)
+    {
+        if (panel == null) return;
+        foreach (Button btn in panel.GetComponentsInChildren<Button>(true))
         {
             btn.onClick.AddListener(() => AudioManager.Instance?.PlayUIClick());
+            if (!btn.TryGetComponent<UIButtonFeedback>(out _))
+            {
+                btn.gameObject.AddComponent<UIButtonFeedback>();
+            }
         }
     }
 

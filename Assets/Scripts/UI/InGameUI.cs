@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -24,6 +25,22 @@ public class InGameUI : MonoBehaviour
 
     [Header("Mega Beam")]
     [SerializeField] private GameObject megaBeamReadyObject;
+    [Tooltip("Tốc độ nhấp nháy (chu kỳ mỗi giây)")]
+    [SerializeField] private float megaBeamBlinkSpeed = 3f;
+    [Tooltip("Độ mờ thấp nhất khi nhấp nháy (0 = trong suốt hoàn toàn, 0.2 = mờ nhẹ)")]
+    [Range(0f, 1f)]
+    [SerializeField] private float megaBeamMinAlpha = 0.2f;
+    [Tooltip("Sử dụng nhịp mờ dần (smooth pulse) hay chớp tắt đột ngột (hard blink)")]
+    [SerializeField] private bool smoothBlink = true;
+    [Tooltip("Có hiệu ứng phóng to/thu nhỏ nhẹ (scale pulse) khi nhấp nháy không")]
+    [SerializeField] private bool megaBeamPulseScale = true;
+    [Tooltip("Mức độ phóng to khi pulse")]
+    [SerializeField] private float megaBeamScaleMultiplier = 1.12f;
+
+    private Coroutine megaBeamBlinkCoroutine;
+    private CanvasGroup megaBeamCanvasGroup;
+    private TMP_Text megaBeamReadyText;
+    private Vector3 megaBeamInitialScale = Vector3.one;
 
     [Header("Gameplay References (Optional - auto-found if unassigned)")]
     [SerializeField] private PlayerLife playerLife;
@@ -39,6 +56,7 @@ public class InGameUI : MonoBehaviour
     private void Awake()
     {
         FindReferences();
+        EnsureMegaBeamComponents();
     }
 
     private void OnEnable()
@@ -58,11 +76,13 @@ public class InGameUI : MonoBehaviour
     private void OnDisable()
     {
         UnsubscribeEvents();
+        StopMegaBeamBlink();
     }
 
     private void OnDestroy()
     {
         UnsubscribeEvents();
+        StopMegaBeamBlink();
     }
 
     /// <summary>
@@ -272,13 +292,121 @@ public class InGameUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows or hides the Mega Beam ready object.
+    /// Shows or hides the Mega Beam ready object and manages its blinking animation.
     /// </summary>
     public void SetMegaBeamReady(bool isReady)
     {
+        if (megaBeamReadyObject == null) return;
+
+        EnsureMegaBeamComponents();
+
+        if (isReady)
+        {
+            if (!megaBeamReadyObject.activeSelf)
+            {
+                megaBeamReadyObject.SetActive(true);
+            }
+
+            if (megaBeamBlinkCoroutine == null && gameObject.activeInHierarchy)
+            {
+                megaBeamBlinkCoroutine = StartCoroutine(BlinkMegaBeamRoutine());
+            }
+        }
+        else
+        {
+            StopMegaBeamBlink();
+            megaBeamReadyObject.SetActive(false);
+        }
+    }
+
+    private void EnsureMegaBeamComponents()
+    {
         if (megaBeamReadyObject != null)
         {
-            megaBeamReadyObject.SetActive(isReady);
+            if (megaBeamCanvasGroup == null)
+            {
+                megaBeamCanvasGroup = megaBeamReadyObject.GetComponent<CanvasGroup>();
+                if (megaBeamCanvasGroup == null)
+                {
+                    megaBeamCanvasGroup = megaBeamReadyObject.AddComponent<CanvasGroup>();
+                }
+            }
+
+            if (megaBeamReadyText == null)
+            {
+                megaBeamReadyText = megaBeamReadyObject.GetComponent<TMP_Text>();
+            }
+
+            if (megaBeamInitialScale == Vector3.zero || megaBeamInitialScale == Vector3.one)
+            {
+                Vector3 scale = megaBeamReadyObject.transform.localScale;
+                megaBeamInitialScale = (scale != Vector3.zero) ? scale : Vector3.one;
+            }
+        }
+    }
+
+    private void StopMegaBeamBlink()
+    {
+        if (megaBeamBlinkCoroutine != null)
+        {
+            StopCoroutine(megaBeamBlinkCoroutine);
+            megaBeamBlinkCoroutine = null;
+        }
+
+        ResetMegaBeamVisuals();
+    }
+
+    private void ResetMegaBeamVisuals()
+    {
+        SetMegaBeamAlpha(1f);
+
+        if (megaBeamReadyObject != null)
+        {
+            megaBeamReadyObject.transform.localScale = megaBeamInitialScale;
+        }
+    }
+
+    private void SetMegaBeamAlpha(float alpha)
+    {
+        if (megaBeamCanvasGroup != null)
+        {
+            megaBeamCanvasGroup.alpha = alpha;
+        }
+        else if (megaBeamReadyText != null)
+        {
+            Color c = megaBeamReadyText.color;
+            c.a = alpha;
+            megaBeamReadyText.color = c;
+        }
+    }
+
+    private IEnumerator BlinkMegaBeamRoutine()
+    {
+        float timer = 0f;
+        while (true)
+        {
+            timer += Time.unscaledDeltaTime * megaBeamBlinkSpeed;
+
+            float wave;
+            if (smoothBlink)
+            {
+                wave = (Mathf.Sin(timer * Mathf.PI * 2f) + 1f) * 0.5f;
+            }
+            else
+            {
+                wave = Mathf.Repeat(timer, 1f) > 0.5f ? 1f : 0f;
+            }
+
+            float currentAlpha = Mathf.Lerp(megaBeamMinAlpha, 1f, wave);
+            SetMegaBeamAlpha(currentAlpha);
+
+            if (megaBeamPulseScale && megaBeamReadyObject != null)
+            {
+                float scale = Mathf.Lerp(1f, megaBeamScaleMultiplier, wave);
+                megaBeamReadyObject.transform.localScale = megaBeamInitialScale * scale;
+            }
+
+            yield return null;
         }
     }
 }
