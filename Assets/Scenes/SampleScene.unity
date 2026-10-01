@@ -3420,8 +3420,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEnergy
   maxEnergy: 100
-  currentBlueEnergy: 100
-  currentRedEnergy: 100
+  currentBlueEnergy: 10
+  currentRedEnergy: 10
 --- !u!114 &811968765
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -159,7 +159,6 @@ public class CursorManager : MonoBehaviour
         RenderTexture.active = rt;
 
         Texture2D cursorTex = new Texture2D(source.width, source.height, TextureFormat.RGBA32, false);
-        cursorTex.alphaIsTransparency = true;
         cursorTex.filterMode = FilterMode.Point;
         cursorTex.ReadPixels(new Rect(0, 0, source.width, source.height), 0, 0);
         cursorTex.Apply();
