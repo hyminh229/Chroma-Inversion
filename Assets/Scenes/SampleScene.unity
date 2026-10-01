@@ -7735,6 +7735,11 @@ MonoBehaviour:
   blueEnergySlider: {fileID: 1547101973}
   redEnergySlider: {fileID: 323302622}
   megaBeamReadyObject: {fileID: 786461591}
+  megaBeamBlinkSpeed: 3
+  megaBeamMinAlpha: 0.2
+  smoothBlink: 1
+  megaBeamPulseScale: 1
+  megaBeamScaleMultiplier: 1.12
   playerLife: {fileID: 811968761}
   playerEnergy: {fileID: 811968763}
   playerShooting: {fileID: 811968758}
