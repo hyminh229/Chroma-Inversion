@@ -3402,7 +3402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e767ed2c06203d14f8152fb7e6678be8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  startingLives: 2
+  startingLives: 1
   invulnerabilityDuration: 2
   flashInterval: 0.1
   flashAlpha: 0.2
