@@ -5,7 +5,13 @@ using UnityEngine;
 public class PlayerLife : MonoBehaviour
 {
     [SerializeField] private int startingLives = 1;
+    [Header("Invulnerability & Flashing")]
     [SerializeField] private float invulnerabilityDuration = 2f;
+    [Tooltip("Thời gian mỗi nhịp nhấp nháy (giây)")]
+    [SerializeField] private float flashInterval = 0.1f;
+    [Tooltip("Độ trong suốt khi nhấp nháy (0 là ẩn hẳn, 0.2 là mờ ảo)")]
+    [Range(0f, 0.8f)]
+    [SerializeField] private float flashAlpha = 0.2f;
 
     public int CurrentLives { get; private set; }
     public bool IsAlive { get; private set; }
@@ -17,11 +23,21 @@ public class PlayerLife : MonoBehaviour
     public event Action OnGameOver;
 
     private Coroutine invulnerabilityCoroutine;
+    private SpriteRenderer[] spriteRenderers;
 
     private void Awake()
     {
         CurrentLives = startingLives;
         IsAlive = true;
+        CacheRenderers();
+    }
+
+    private void CacheRenderers()
+    {
+        if (spriteRenderers == null || spriteRenderers.Length == 0)
+        {
+            spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+        }
     }
 
     // Bất kỳ va chạm/trúng đòn nào lọt qua Shield và không đang bất tử đều
@@ -71,6 +87,7 @@ public class PlayerLife : MonoBehaviour
         CurrentLives = Mathf.Max(0, lives);
         IsAlive = CurrentLives > 0;
         IsInvulnerable = false;
+        SetRenderersAlpha(1f);
         Debug.Log("Player lives restored: " + CurrentLives);
         OnLifeChanged?.Invoke(CurrentLives);
     }
@@ -78,10 +95,40 @@ public class PlayerLife : MonoBehaviour
     private IEnumerator RespawnInvulnerability()
     {
         IsInvulnerable = true;
-        yield return new WaitForSeconds(invulnerabilityDuration);
+        CacheRenderers();
+
+        float elapsed = 0f;
+        bool isDimmed = false;
+
+        while (elapsed < invulnerabilityDuration)
+        {
+            isDimmed = !isDimmed;
+            SetRenderersAlpha(isDimmed ? flashAlpha : 1f);
+
+            yield return new WaitForSeconds(flashInterval);
+            elapsed += flashInterval;
+        }
+
+        // Hồi phục hoàn toàn sau khi hết thời gian bất tử
+        SetRenderersAlpha(1f);
         IsInvulnerable = false;
         invulnerabilityCoroutine = null;
         OnRespawn?.Invoke();
+    }
+
+    private void SetRenderersAlpha(float alpha)
+    {
+        if (spriteRenderers == null) return;
+
+        for (int i = 0; i < spriteRenderers.Length; i++)
+        {
+            if (spriteRenderers[i] != null)
+            {
+                Color color = spriteRenderers[i].color;
+                color.a = alpha;
+                spriteRenderers[i].color = color;
+            }
+        }
     }
 
     private void Die()
@@ -95,6 +142,7 @@ public class PlayerLife : MonoBehaviour
             invulnerabilityCoroutine = null;
         }
         IsInvulnerable = false;
+        SetRenderersAlpha(1f);
 
         Debug.Log("Player Died! Game Over.");
         OnGameOver?.Invoke();
