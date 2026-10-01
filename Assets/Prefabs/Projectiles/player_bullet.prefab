@@ -126,6 +126,9 @@ MonoBehaviour:
   spriteRenderer: {fileID: 3553897404231292858}
   blueSprite: {fileID: 0}
   redSprite: {fileID: 0}
+  animator: {fileID: 0}
+  blueAnimationState: player_blue_bullet
+  redAnimationState: player_bullet
   isPlayerBullet: 1
 --- !u!212 &592352655145082851
 SpriteRenderer:

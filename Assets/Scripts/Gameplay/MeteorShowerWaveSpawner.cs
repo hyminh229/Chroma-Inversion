@@ -26,6 +26,7 @@ public class MeteorShowerWaveSpawner : MonoBehaviour, IWaveSpawner
     public event Action OnWaveCleared;
 
     private int aliveCount;
+    private bool finishedSpawning;
 
     public void StartWave()
     {
@@ -34,7 +35,9 @@ public class MeteorShowerWaveSpawner : MonoBehaviour, IWaveSpawner
 
     private IEnumerator RunWave()
     {
-        aliveCount = meteorCount;
+        aliveCount = 0;
+        finishedSpawning = false;
+
         float interval = meteorCount > 0 ? showerDuration / meteorCount : 0f;
 
         ScreenBoundsUtil.GetWorldBounds(out float rawMinX, out float rawMaxX, out _, out float topY);
@@ -49,6 +52,12 @@ public class MeteorShowerWaveSpawner : MonoBehaviour, IWaveSpawner
             SpawnOne(new Vector3(x, spawnY, 0f));
             yield return new WaitForSeconds(interval);
         }
+
+        // Chỉ từ lúc này mới cho phép aliveCount về 0 trigger OnWaveCleared —
+        // tránh trường hợp bắn chết quá nhanh khiến wave "clear" trong khi
+        // spawner vẫn còn đang tạo thêm thiên thạch phía sau.
+        finishedSpawning = true;
+        CheckCleared();
     }
 
     private void SpawnOne(Vector3 position)
@@ -69,6 +78,10 @@ public class MeteorShowerWaveSpawner : MonoBehaviour, IWaveSpawner
             controller.ConfigureMovement(direction, randomSpeed);
         }
 
+        // Đếm theo số THỰC SỰ đã spawn thành công, không gán cứng = meteorCount
+        // từ đầu — tránh bị kẹt vĩnh viễn nếu 1 lần spawn nào đó fail.
+        aliveCount++;
+
         if (instance.TryGetComponent(out MeteorHealth health))
         {
             health.OnDeath += HandleMeteorCleared;
@@ -82,11 +95,17 @@ public class MeteorShowerWaveSpawner : MonoBehaviour, IWaveSpawner
     private void HandleMeteorCleared()
     {
         aliveCount--;
+        if (aliveCount < 0) aliveCount = 0;
 
-        if (aliveCount <= 0)
-        {
-            Debug.Log(gameObject.name + " cleared!");
-            OnWaveCleared?.Invoke();
-        }
+        CheckCleared();
+    }
+
+    private void CheckCleared()
+    {
+        if (!finishedSpawning) return;
+        if (aliveCount > 0) return;
+
+        Debug.Log(gameObject.name + " cleared!");
+        OnWaveCleared?.Invoke();
     }
 }
